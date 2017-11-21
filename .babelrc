@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "latest"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+      ]
+    }
+  }
+}
