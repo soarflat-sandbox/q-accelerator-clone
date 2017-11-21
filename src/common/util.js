@@ -53,5 +53,87 @@ export default class Util {
 
   static saveHistory(url, title, date, callback = () => {}) {
     const entity = this.createHistoryEntity(url, title, date);
+
+    this.getHistories((histories) => {
+      Object.assign(histories, entity);
+      histories = this.removeOldHistories(histories);
+      ChromeStorage.saveHistories(histories, () => {
+        this.infoLog('閲覧履歴を保存', url);
+        callback();
+      });
+    });
+  }
+
+  static getHistories(callback) {
+    ChromeStorage.getHistories((histories) => {
+      callback(histories);
+    });
+  }
+
+  static clearHistories(callback = () => {}) {
+    ChromeStorage.saveHistories({}, () => {
+      this.infoLog('閲覧履歴を消去');
+      callback();
+    });
+  }
+
+  static saveSetting(key, value, callback = () => {}) {
+    let entity = {};
+    entity[key] = value;
+
+    this.getSettings((settings) => {
+      Object.assign(settings, entity);
+      ChromeStorage.saveSettings(settings, () => {
+        const message = JSON.stringify(entity);
+        this.infoLog('設定を保存', message);
+        callback();
+      });
+    });
+  }
+
+  static getSettings(callback) {
+    ChromeStorage.getSettings((settings) => {
+      const defaultSettings = require('./default-settings.json');
+      defaultSettings['default-body-template'] = require('./default-body-template.md');
+      Object.assign(defaultSettings, settings);
+      callback(defaultSettings);
+    });
+  }
+
+  /**
+   * markdownのDiff構文を解析
+   * -（マイナス）で始まる行を消す
+   * +（プラス）で始まる行の+を消す
+   */
+  static parseDiffCode(code) {
+    const lines = code.split('\n');
+    const MINUS_REGEXP = /^-+.*$/;
+    const PLUS_REGEXP = /^\++(.*$)/;
+
+    const newLines = lines
+      .filter(line => !MINUS_REGEXP.test(line))
+      .map(line => {
+        if (!PLUS_REGEXP.test(line)) return line;
+
+        const [, newLine] = line.match(/^\++(.*$)/);
+        return newLine;
+      });
+    return newLines.join('\n');
+  }
+
+  static infoLog(...messages) {
+    messages.unshift('');
+    const resultMessage = `Q Accelerator ${messages.join(' | ')}`;
+    console.info(resultMessage);
+  }
+
+  static errorLog(e) {
+    const messages = [
+      '',
+      e.message,
+      e.stack
+    ];
+    const resultMessage = `Q Accelerator ${messages.join(' | ')}`;
+    console.error(resultMessage);
   }
 }
