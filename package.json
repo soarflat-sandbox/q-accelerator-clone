@@ -1,0 +1,11 @@
+{
+  "name": "q-accelerator",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "soarflat",
+  "license": "MIT"
+}
