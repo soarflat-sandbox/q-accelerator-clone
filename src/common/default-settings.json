@@ -1,0 +1,18 @@
+{
+  "copy-code": true,
+  "default-body": true,
+  "default-body-url": false,
+  "mute-users": [],
+  "mute-user-article": true,
+  "mute-user-comment": true,
+  "mute-already-read-article": true,
+  "mute-already-read-article-show-button": true,
+  "off-like-off-stock": true,
+  "off-stock-off-like": true,
+  "on-like-on-stock": true,
+  "on-stock-on-like": true,
+  "save-history": true,
+  "show-article-update-time": true,
+  "show-line-number": true,
+  "show-stock-counts": true
+}
