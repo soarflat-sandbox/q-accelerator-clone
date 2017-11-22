@@ -39,7 +39,7 @@ export default class Util {
       return histories;
     }
 
-    const items = Object.values(histories).sort(itemA, itemB => (itemA.date > itemB.date) ? 1 : -1);
+    const items = Object.values(histories).sort((itemA, itemB) => (itemA.date > itemB.date) ? 1 : -1);
     const removeSize = sortedHistories.length - maxSize;
 
     for (let i = 0; i < removeSize; i += 1) {

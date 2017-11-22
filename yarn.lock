@@ -2,3 +2,59 @@
 # yarn lockfile v1
 
 
+axios@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.17.1.tgz#2d8e3e5d0bdbd7327f91bc814f5c57660f81824d"
+  dependencies:
+    follow-redirects "^1.2.5"
+    is-buffer "^1.1.5"
+
+debug@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
+
+focus-trap@^2.1.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-2.3.1.tgz#f4fb86cfe6da38dc652b373e9f42ba476eab1c14"
+  dependencies:
+    tabbable "^1.0.3"
+
+follow-redirects@^1.2.5:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.2.6.tgz#4dcdc7e4ab3dd6765a97ff89c3b4c258117c79bf"
+  dependencies:
+    debug "^3.1.0"
+
+is-buffer@^1.1.5:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
+
+moment@^2.11.1:
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.2.tgz#8a7f774c95a64550b4c7ebd496683908f9419dbe"
+
+ms@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
+tabbable@^1.0.3:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.1.1.tgz#88618caa0dc76e877572a678f0ad97519bba6761"
+
+vue-mdl@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vue-mdl/-/vue-mdl-1.1.1.tgz#39277ee9e8fd75d44ddf789498a6dabbb8791808"
+  dependencies:
+    focus-trap "^2.1.0"
+
+vue-moment@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vue-moment/-/vue-moment-3.0.0.tgz#24c05b7911a893a25335e3bd09f42ac30946fb30"
+  dependencies:
+    moment "^2.11.1"
+
+vue@^2.5.8:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.8.tgz#f855c1c27255184a82225f4bef225473e8faf15b"

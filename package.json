@@ -1,7 +1,12 @@
 {
   "name": "q-accelerator",
   "version": "1.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.17.1",
+    "vue": "^2.5.8",
+    "vue-mdl": "^1.1.1",
+    "vue-moment": "^3.0.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
