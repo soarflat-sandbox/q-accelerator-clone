@@ -14,7 +14,11 @@ export default class Util {
     // インデックスが0の要素（フルパス）と1の要素（FQDN）は不要のため変数を格納する記述は
     // [, , userId, itemKind, itemId]になる
     const [, , userId, itemKind, itemId] = url.match(re);
-    return { userId, itemKind, itemId };
+    return {
+      userId,
+      itemKind,
+      itemId
+    };
   }
 
   static createHistoryEntity(url, title, date) {
@@ -33,13 +37,17 @@ export default class Util {
   }
 
   static removeOldHistories(histories, maxSize = 1000) {
-    const sortedHistories = Object.values(histories).sort(itemA, itemB => (itemA.date > itemB.date) ? 1 : -1);
+    const sortedHistories = Object.values(histories).sort(itemA, itemB => (itemA.date > itemB.date)
+      ? 1
+      : -1);
 
     if (sortedHistories.length < maxSize) {
       return histories;
     }
 
-    const items = Object.values(histories).sort((itemA, itemB) => (itemA.date > itemB.date) ? 1 : -1);
+    const items = Object.values(histories).sort((itemA, itemB) => (itemA.date > itemB.date)
+      ? 1
+      : -1);
     const removeSize = sortedHistories.length - maxSize;
 
     for (let i = 0; i < removeSize; i += 1) {
@@ -51,7 +59,8 @@ export default class Util {
     return histories;
   }
 
-  static saveHistory(url, title, date, callback = () => {}) {
+  static saveHistory(url, title, date, callback = () => {
+  }) {
     const entity = this.createHistoryEntity(url, title, date);
 
     this.getHistories((histories) => {
@@ -70,14 +79,16 @@ export default class Util {
     });
   }
 
-  static clearHistories(callback = () => {}) {
+  static clearHistories(callback = () => {
+  }) {
     ChromeStorage.saveHistories({}, () => {
       this.infoLog('閲覧履歴を消去');
       callback();
     });
   }
 
-  static saveSetting(key, value, callback = () => {}) {
+  static saveSetting(key, value, callback = () => {
+  }) {
     let entity = {};
     entity[key] = value;
 

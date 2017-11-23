@@ -2,7 +2,12 @@ import Vue from 'vue';
 import VueMdl from 'vue-mdl';
 import VueMoment from 'vue-moment';
 import Util from '../common/util';
-import { qiitaLike, qiitaNoLike, qiitaStock, qiitaNoStock } from './common/icons';
+import {
+  qiitaLike,
+  qiitaNoLike,
+  qiitaStock,
+  qiitaNoStock
+} from './common/icons';
 import ExtendComponent from './settings/extend';
 import PostComponent from './settings/post';
 import HistoriesComponent from './settings/histories';

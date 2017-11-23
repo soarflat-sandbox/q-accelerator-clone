@@ -14,4 +14,9 @@ const qiitaNoStock = {
   template: '<div class="fa-stack" style="top: -2px;"><span class="fa fa-folder-open fa-stack-1x"></span></div>'
 };
 
-export { qiitaLike, qiitaNoLike, qiitaStock, qiitaNoStock };
+export {
+  qiitaLike,
+  qiitaNoLike,
+  qiitaStock,
+  qiitaNoStock
+};

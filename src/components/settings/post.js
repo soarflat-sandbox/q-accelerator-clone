@@ -10,6 +10,6 @@ export default function (settings) {
       'default-body': DefaultBodyComponent(settings),
     }
   });
-
+  
   return component;
 }
