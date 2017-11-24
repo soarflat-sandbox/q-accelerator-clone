@@ -4,10 +4,26 @@ import ArticleDomHandler from '../../../src/content_scripts/article/article-dom-
 
 describe('ArticleDomHandler', function () {
   describe('getTitle()', function () {
-    it('記事タイトルを取得する', function () {
+    it('記事タイトルを取得するべき', function () {
       document.body.innerHTML = __html__['test/content_scripts/article/article.html'];
       const articleDomHandler = new ArticleDomHandler();
-      assert.equal(articleDomHandler.getTitle(), 'webpack 入門 （v3系 対応）');
+      assert.equal(articleDomHandler.getTitle(), 'mocha + power-assert環境の構築');
+    });
+  });
+
+  describe('getLikeButtons()', function () {
+    it('イイネボタンが2つ存在するべき', function () {
+      document.body.innerHTML = __html__['test/content_scripts/article/article.html'];
+      const articleDomHandler = new ArticleDomHandler();
+      assert.equal(articleDomHandler.getLikeButtons().length, 2);
+    });
+  });
+
+  describe('isLiked()', function () {
+    it('イイネ済みではないべき', function () {
+      document.body.innerHTML = __html__['test/content_scripts/article/article.html'];
+      const articleDomHandler = new ArticleDomHandler();
+      assert.equal(articleDomHandler.isLiked(), false);
     });
   });
 });
