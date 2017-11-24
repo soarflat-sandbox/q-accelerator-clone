@@ -1,0 +1,86 @@
+{
+  "manifest_version": 2,
+  "name": "Q Accelerator",
+  "short_name": "QA",
+  "description": "Q AcceleratorのClone",
+  "icons": {
+    "16": "assets/images/qa_icon16.png",
+    "48": "assets/images/qa_icon48.png",
+    "128": "assets/images/qa_icon128.png"
+  },
+  "version": "1.3.4",
+  "background": {
+    "persistent": false,
+    "page": "background/background.html"
+  },
+  "browser_action": {
+    "default_popup": "assets/popup.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://qiita.com/",
+        "https://qiita.com/",
+        "http://qiita.com/items",
+        "https://qiita.com/items",
+        "http://qiita.com/stock",
+        "https://qiita.com/stock",
+        "http://qiita.com/mine",
+        "https://qiita.com/mine"
+      ],
+      "js": [
+        "content_scripts/article-list-stream-content.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://qiita.com/tags/*",
+        "https://qiita.com/tags/*"
+      ],
+      "js": [
+        "content_scripts/article-list-tags-content.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://qiita.com/*/items/*",
+        "https://qiita.com/*/items/*",
+        "http://qiita.com/*/private/*",
+        "https://qiita.com/*/private/*"
+      ],
+      "js": [
+        "content_scripts/article-content.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://qiita.com/popular-items",
+        "https://qiita.com/popular-items"
+      ],
+      "js": [
+        "content_scripts/popular-items-content.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://qiita.com/drafts/new",
+        "https://qiita.com/drafts/new"
+      ],
+      "js": [
+        "content_scripts/drafts-new-content.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "unlimitedStorage",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "assets/settings.html",
+    "open_in_tab": true
+  },
+  "web_accessible_resources": [
+    "assets/images/*"
+  ]
+}
