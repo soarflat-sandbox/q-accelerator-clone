@@ -1,0 +1,2495 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>webpack 入門 （v3系 対応） - Qiita</title>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="
+
+はじめに
+
+webpackに関して説明する機会があったため、それらに関してまとめました。
+
+
+「gulpは使ってるけどwebpackはちょっと...」
+「webpack.config.jsの中身を見てみたが、何を書いているのか理解できなくて諦めた」
+「何が便利なのかよくわからない」
+「別にwebpack使わなくても実装はできるから必要なくない？」
+
+
+といった人達向けに書いた記事であり、
+
+
+webpackに関しての基本情報、利用用途、機能を理解する。
+そもそもモジ..." name="description"/>
+    <meta content="summary" name="twitter:card"/>
+    <meta content="@Qiita" name="twitter:site"/>
+    <meta content="webpack 入門 （v3系 対応） - Qiita" property="og:title"/>
+    <meta content="article" property="og:type"/>
+    <meta content="https://qiita.com/soarflat/items/28bf799f7e0335b68186" property="og:url"/>
+    <meta content="https://cdn.qiita.com/assets/qiita-fb-2887e7b4aad86fd8c25cea84846f2236.png" property="og:image"/>
+    <meta content="# はじめに
+webpackに関して説明する機会があったため、それらに関してまとめました。
+
+- 「gulpは使ってるけどwebpackはちょっと...」
+- 「webpack.config.jsの中身を見てみたが、何を書いているのか..." property="og:description"/>
+    <meta content="Qiita" property="og:site_name"/>
+    <meta content="564524038" property="fb:admins"/>
+    <link rel="canonical" href="https://qiita.com/soarflat/items/28bf799f7e0335b68186"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn.qiita.com/assets/favicons/public/production-4ff10c1e1e2b5fcb353ff9cafdd56c70.ico"/>
+    <link rel="apple-touch-icon" type="image/png" href="https://cdn.qiita.com/assets/favicons/public/apple-touch-icon-f9a6afad761ec2306e10db2736187c8b.png"/>
+    <link href="/opensearch.xml" rel="search" title="Qiita" type="application/opensearchdescription+xml"/>
+    <link rel="stylesheet" media="all" href="https://cdn.qiita.com/assets/public-c8912599aad01ea3e90d66ecf1b397c9.min.css"/>
+    <meta name="csrf-param" content="authenticity_token"/>
+    <meta name="csrf-token" content="xh/KN+SipVGhBTx1cF0+A/QnmZZTQHm/MU8ytP8zcsJUIUqT3QB9Y35wWUQYQwq+viesMVQ3rZtLZl0Sep0+bQ=="/>
+    <script>
+      window.gtmDataLayer = [
+        {
+          'analytics.dimension5': 'false',
+          'app.env': 'production',
+          'app.layoutVersion': 1,
+          'app.userId': 69667
+        },
+        { 'gtm.start': new Date().getTime(), event: 'gtm.js' }
+      ];
+    </script>
+    <script src="https://www.googletagmanager.com/gtm.js?id=GTM-TBQWPN&l=gtmDataLayer" async></script>
+  </head>
+  <body class="without-js" id="">
+    <noscript>
+      <iframe height="0" src="//www.googletagmanager.com/ns.html?id=GTM-TBQWPN" style="display:none;visibility:hidden" width="0"></iframe>
+    </noscript>
+    <script>
+      document.body.className = document.body.className.replace('without-js', '') + ' with-js';
+      window.Qiita = {
+        "asset_host": "cdn.qiita.com",
+        "TLD": "com",
+        "controller_path": "public/items",
+        "controller_action": "public/items#show",
+        "controller": "items",
+        "action": "show",
+        "action_path": "public/items#show",
+        "env": "production",
+        "flash": {},
+        "is_team_page": false,
+        "request_parameters": { "controller": "public/items", "action": "show", "user_id": "soarflat", "type": "items", "id": "28bf799f7e0335b68186" },
+        "root_domain": "qiita.com",
+        "variant": null,
+        "config": { "mixpanel": { "per_team": "c0a2116368b33b44b5029ebd2cc9b094", "public": "17d24b448ca579c365d2d1057f3a1791", "team": "b7c0342acba2dbc8742484d98788efb3" }, "default_locale": "en", "locale": "ja" },
+        "team": null,
+        "user": { "id": 69667, "url_name": "soarflat", "profile_image_url": "https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226", "email": "hira78472@kc4.so-net.ne.jp", "staff": false },
+        "GIT_BRANCH": null,
+        "DEBUG": false
+      };
+
+      /* You are logged in */
+    </script>
+    <div class="headerContainer headerContainer-public" role="navigation">
+      <script type="application/json" class="js-react-on-rails-component" data-component-name="HeaderContainer" data-dom-id="HeaderContainer-react-component-c9870670-2ee7-4af2-bf7f-6a8afcfb5783">{
+        "user": {
+          "profile_image_url": "https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226",
+          "team_only": false,
+          "teams": [],
+          "url_name": "soarflat"
+        },
+        "team": null,
+        "news": {
+          "type": "PR",
+          "content": "Markdownによる情報共有サービス、Qiita:Team",
+          "url": "https://teams.qiita.com?utm_source=qiita\u0026utm_medium=header_news"
+        },
+        "initial_unread_count": 0,
+        "siteid_image": "https://cdn.qiita.com/siteid-reverse.png",
+        "is_team_page": false,
+        "on_team_setting": false,
+        "show_post_menu": true,
+        "show_search_menu": true,
+        "is_fluid": false,
+        "locale": "ja"
+      }</script>
+      <div id="HeaderContainer-react-component-c9870670-2ee7-4af2-bf7f-6a8afcfb5783"></div>
+
+    </div>
+    <div id="main">
+      <script>window.ga = window.ga || function () {(ga.q = ga.q || []).push(arguments)};
+      ga.l = +new Date;
+      ga('create', 'UA-88998500-1', 'auto', { name: 'userTracker' });
+      ga('userTracker.send', 'pageview');</script>
+      <script async="" src="https://www.google-analytics.com/analytics.js"></script>
+      <script type="application/ld+json">
+        {  "@context": "http://schema.org",  "@type": "BreadcrumbList",  "itemListElement": [    {      "@type": "ListItem",      "position": 1,      "item": {        "@id": "/",        "name": "Qiita"      }    },    {      "@type": "ListItem",      "position": 2,      "item": {        "@id": "/items",        "name": "投稿"      }    },    {      "@type": "ListItem",      "position": 3,      "item": {        "@id": "/tags/JavaScript",        "name": "JavaScript"      }    }  ]}
+      </script>
+      <article itemscope="" itemtype="http://schema.org/Article">
+        <div class="ArticleMainHeader ">
+          <div class="container"></div>
+          <div class="container">
+            <div class="row s-flex-align-center">
+              <div class="col-sm-9"><h1 class="ArticleMainHeader__title" itemprop="headline">webpack 入門 （v3系 対応）</h1>
+                <ul class="TagList">
+                  <li class="TagList__item" data-count="15939">
+                    <a class="u-link-unstyled TagList__label" href="/tags/JavaScript"><img alt="JavaScript" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/65275b3d3423ddf27cec968034cca8850e4ca97b/medium.jpg?1490807160"/><span>JavaScript</span></a></li>
+                  <li class="TagList__item" data-count="697"><a class="u-link-unstyled TagList__label" href="/tags/webpack"><img alt="webpack" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/3882adb94d0119d46e0898cc872b6860c13e7b74/medium.jpg?1425612954"/><span>webpack</span></a>
+                  </li>
+                  <li class="TagList__item" data-count="326">
+                    <a class="u-link-unstyled TagList__label" href="/tags/%E5%85%A5%E9%96%80"><img alt="入門" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/0aadda527f80dbef5d6dcfc1afc3ee134155652b/medium.jpg?1475563514"/><span>入門</span></a></li>
+                </ul>
+              </div>
+              <div class="col-sm-3">
+                <div class="itemsShowHeaderStock">
+                  <ul class="list-unstyled itemsShowHeaderStock_statusList">
+                    <li>
+                      <div class="itemsShowHeaderStock_count stock"><span class="fa fa-thumbs-up"></span><span class="js-likecount">266</span></div>
+                      <div class="itemsShowHeaderStock_countText">いいね</div>
+                    </li>
+                    <li>
+                      <div class="itemsShowHeaderStock_count" content="0 UserComments" itemprop="commentCount"><span class="fa fa-comment"></span>0</div>
+                      <div class="itemsShowHeaderStock_countText">コメント</div>
+                    </li>
+                  </ul>
+                </div>
+                <ul class="list-inline ArticleMainHeader__users">
+                  <li class="js-hovercard" data-hovercard-target-name="293yoshida"><a itemprop="url" href="/293yoshida"><img alt="293yoshida" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/49731/profile-images/1473691838"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="tad"><a itemprop="url" href="/tad"><img alt="tad" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/49451/profile-images/1473691731"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="satonaka"><a itemprop="url" href="/satonaka"><img alt="satonaka" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/71778/profile-images/1473698940"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="konomirab"><a itemprop="url" href="/konomirab"><img alt="konomirab" class="thumb thumb--xs" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="mnishiguchi"><a itemprop="url" href="/mnishiguchi"><img alt="mnishiguchi" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/82804/profile-images/1473702574"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="masatoru"><a itemprop="url" href="/masatoru"><img alt="masatoru" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/44195/profile-images/1473761035"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="ykyouhei"><a itemprop="url" href="/ykyouhei"><img alt="ykyouhei" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/33433/profile-images/1473686124"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="akinorina"><a itemprop="url" href="/akinorina"><img alt="akinorina" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/98115/profile-images/1473707401"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="wolfnao221"><a itemprop="url" href="/wolfnao221"><img alt="wolfnao221" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/80564/profile-images/1473701829"/></a></li>
+                  <li class="js-hovercard" data-hovercard-target-name="sea_ship"><a itemprop="url" href="/sea_ship"><img alt="sea_ship" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/30329/profile-images/1510052751"/></a></li>
+                  <li><a href="/soarflat/items/28bf799f7e0335b68186/likers"><span class="fa fa-ellipsis-h"></span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ArticleAsideHeader">
+          <div class="container">
+            <div class="u-flex u-space-between">
+              <div class="u-flex u-flex-wrap">
+                <div class="u-flex u-align-center s-pdv-5 u-flex-wrap">
+                  <div class="ArticleAsideHeader__author"><a href="/soarflat"><img class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226" alt="1473698226"/></a> <a class="u-link-unstyled" href="/soarflat">soarflat</a></div>
+                  <div class="ArticleAsideHeader__date">
+                    <meta content="2017-02-02T03:21:09+09:00" itemprop="datePublished"/>
+                    <span data-toggle="tooltip" title="2017年02月02日に投稿"><time datetime="2017-11-20T18:29:24+09:00" itemprop="dateModified">2017年11月20日</time>に更新</span></div>
+                </div>
+                <div class="u-flex u-align-center s-pdv-5 mobile-hidden">
+                  <div class="ArticleAsideHeader__revision"><a data-toggle="tooltip" title="編集履歴" href="/soarflat/items/28bf799f7e0335b68186/revisions"><span class="fa fa-history"></span></a><span class="ArticleAsideHeader__revisionCount">30</span></div>
+                  <a class="ArticleAsideHeader__edit btn btn-default btn-xs" href="/drafts/28bf799f7e0335b68186/edit"><span class="fa fa-pencil"></span> 投稿を編集</a></div>
+                <div class="u-flex u-align-center s-pdv-5 mobile-hidden">
+                  <div class="ArticleAsideHeader__editRequest"><span class="fa fa-inbox"></span><a href="/soarflat/items/28bf799f7e0335b68186/patches">編集リクエスト</a><span class="ArticleAsideHeader__editRequestCount">1</span></div>
+                  <div class="ArticleAsideHeader__viewCount">30197<span>views</span></div>
+                </div>
+              </div>
+              <div class="u-flex u-align-center s-flex-justiry-between s-pdv-5 u-shrink-0">
+                <div class="ArticleAsideHeader__stock">
+                  <div class="js-stockbutton" data-position="top" data-props="{&quot;stock_status&quot;:false}"></div>
+                </div>
+                <div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-cog fa-lg"></span>&nbsp;<span class="fa fa-caret-down"></span></a>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="dropdown__item--mobile"><a href="/soarflat/items/28bf799f7e0335b68186/revisions"><span class="fa fa-fw fa-history"></span> 編集履歴<span>(30)</span></a></li>
+                    <li><a href="/soarflat/items/28bf799f7e0335b68186.md"><span class="fa fa-fw fa-file-text-o"></span> Markdownで本文を見る</a></li>
+                    <li class="dropdown__item--mobile"><a href="/drafts/28bf799f7e0335b68186/edit"><span class="fa fa-fw fa-pencil"></span> 投稿を編集</a></li>
+                    <li class="dropdown__item--mobile"><a href="/soarflat/items/28bf799f7e0335b68186/patches"><span class="fa fa-fw fa-inbox"></span> 編集リクエスト<span>(1)</span></a></li>
+                    <li><a data-confirm="この投稿を削除してもよろしいですか？" rel="nofollow" data-method="delete" href="/soarflat/items/28bf799f7e0335b68186"><span class="fa fa-fw fa-trash-o"></span> 削除</a></li>
+                    <li class="dropdown__item--mobile ArticleAsideHeader__viewCount--mobile"><span class="fa fa-fw fa-eye"></span>30197<span>views</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row" id="article-body-wrapper">
+            <div class="col-sm-9">
+              <section class="markdownContent markdownContent-headingEnabled js-task-list-container clearfix position-relative js-task-list-enabled" id="item-28bf799f7e0335b68186" itemprop="articleBody">
+                <h1>
+                  <span id="はじめに" class="fragment"></span><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><i class="fa fa-link"></i></a>はじめに</h1>
+
+                <p>webpackに関して説明する機会があったため、それらに関してまとめました。</p>
+
+                <ul>
+                  <li>「gulpは使ってるけどwebpackはちょっと...」</li>
+                  <li>「webpack.config.jsの中身を見てみたが、何を書いているのか理解できなくて諦めた」</li>
+                  <li>「何が便利なのかよくわからない」</li>
+                  <li>「別にwebpack使わなくても実装はできるから必要なくない？」</li>
+                </ul>
+
+                <p>といった人達向けに書いた記事であり、</p>
+
+                <ul>
+                  <li>webpackに関しての基本情報、利用用途、機能を理解する。</li>
+                  <li>そもそもモジュールバンドラとは何か、なぜモジュールバンドラを利用するのかを理解する。</li>
+                </ul>
+
+                <p>ことを目的としています。</p>
+
+                <p>解説に利用しているコードの最終形態はGitHub上にあります。<br>
+                  <a href="https://github.com/soarflat-sandbox/webpack-v3-tutorial" rel="nofollow noopener" target="_blank">webpack-v3-tutorial</a></p>
+
+                <p>webpack v1系の解説、コードは以下に移動しましたので、必要であればご参照ください。<br>
+                  <a href="https://github.com/soarflat-sandbox/webpack-v1-tutorial" rel="nofollow noopener" target="_blank">webpack-v1-tutorial</a></p>
+
+                <h2>
+                  <span id="本記事の前提や注意点" class="fragment"></span><a href="#%E6%9C%AC%E8%A8%98%E4%BA%8B%E3%81%AE%E5%89%8D%E6%8F%90%E3%82%84%E6%B3%A8%E6%84%8F%E7%82%B9"><i class="fa fa-link"></i></a>本記事の前提や注意点</h2>
+
+                <ul>
+                  <li>webpackのバージョンは3系を対象にしています。</li>
+                  <li>gulpを触ったことがある人向けの記事なので<code>npm install</code>などnpmに関する説明は省きます。</li>
+                  <li>webpackとモジュールバンドラに関しての記事なのでgulpでwebpackを利用する方法は記載していないです。</li>
+                  <li>webpackは画像やCSSなどもモジュールにしてまとめることができますが、今回はJavaScriptに焦点を当てた説明をしています。</li>
+                </ul>
+
+                <h1>
+                  <span id="webpackとは" class="fragment"></span><a href="#webpack%E3%81%A8%E3%81%AF"><i class="fa fa-link"></i></a>webpackとは</h1>
+
+                <p>モジュールバンドラのこと。</p>
+
+                <h2>
+                  <span id="モジュールバンドラとは" class="fragment"></span><a href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%81%A8%E3%81%AF"><i class="fa fa-link"></i></a>モジュールバンドラとは</h2>
+
+                <p>複数のモジュールを1つにまとめたファイルを出力するツールのこと（簡潔に言ってしまえば）。<br>
+                  ※出力設定によっては複数のファイルを出力することもあります。</p>
+
+                <p>webpack以外に、以下のようなモジュールバンドラが存在する。</p>
+
+                <ul>
+                  <li>Browserify</li>
+                  <li>RequireJS</li>
+                </ul>
+
+                <h2>
+                  <span id="webpackモジュールバンドラ関連の記事でよく利用されている用語" class="fragment"></span><a href="#webpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E9%96%A2%E9%80%A3%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E3%82%88%E3%81%8F%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E7%94%A8%E8%AA%9E"><i class="fa fa-link"></i></a>webpack（モジュールバンドラ）関連の記事でよく利用されている用語
+                </h2>
+
+                <h3>
+                  <span id="モジュール" class="fragment"></span><a href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a>モジュール</h3>
+
+                <p>機能ごとに分割されたファイルのこと。<br>
+                  そのため、webpackは複数のファイルをまとめたファイルを出力するツールと認識しておけばとりあえずは問題ない。</p>
+
+                <h3>
+                  <span id="バンドル" class="fragment"></span><a href="#%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB"><i class="fa fa-link"></i></a>バンドル</h3>
+
+                <p>まとめられたファイルのこと。バンドルファイルとも言う。<br>
+                  そのため、以下の言葉の意味は大体同じ。</p>
+
+                <ul>
+                  <li>「バンドルが大きい」 = 「まとめられたファイルのサイズが大きい」</li>
+                  <li>「バンドルを生成する」 = 「まとめられたファイルを生成する」</li>
+                </ul>
+
+                <h3>
+                  <span id="バンドルする" class="fragment"></span><a href="#%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%99%E3%82%8B"><i class="fa fa-link"></i></a>バンドルする</h3>
+
+                <p>「まとめる」という意味で使われていることが多い。<br>
+                  そのため、以下の言葉の意味は大体同じ。</p>
+
+                <ul>
+                  <li>「モジュールをまとめる」 = 「モジュールをバンドルする」</li>
+                </ul>
+
+                <h3>
+                  <span id="ビルド" class="fragment"></span><a href="#%E3%83%93%E3%83%AB%E3%83%89"><i class="fa fa-link"></i></a>ビルド</h3>
+
+                <p>webpackにおいての「ビルド」は「バンドルを出力するまでの一連の処理」という意味で使われていることが多い（気がする）。<br>
+                  そのため、以下の言葉の意味は大体同じ。</p>
+
+                <ul>
+                  <li>「ビルドする」 = 「バンドルを出力するまでの一連の処理を実行する」</li>
+                  <li>「ビルドが遅い」 = 「バンドルを出力するまでの一連の処理が遅い」</li>
+                </ul>
+
+                <h1>
+                  <span id="webpackを利用してみる" class="fragment"></span><a href="#webpack%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B"><i class="fa fa-link"></i></a>webpackを利用してみる</h1>
+
+                <p>webpackを利用してモジュールをバンドルしたファイルを出力してみる。<br>
+                  以下は出力までのイメージ図。</p>
+
+                <p>
+                  <a href="https://camo.qiitausercontent.com/b3492517f986482040c941a7e4089535840b5c18/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f34323537643039632d303366612d663935322d646437302d6135376437376630663231332e6a706567" target="_blank" rel="nofollow noopener"><img src="https://camo.qiitausercontent.com/b3492517f986482040c941a7e4089535840b5c18/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f34323537643039632d303366612d663935322d646437302d6135376437376630663231332e6a706567" alt="webpack.jpg" data-canonical-src="https://qiita-image-store.s3.amazonaws.com/0/69667/4257d09c-03fa-f952-dd70-a57d77f0f213.jpeg"></a>
+                </p>
+
+                <h2>
+                  <span id="webpackのインストール" class="fragment"></span><a href="#webpack%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a>webpackのインストール</h2>
+
+                <p>以下のコマンドでグローバルインストールできる。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>npm install webpack -g
+</pre>
+                  </div>
+                </div>
+
+                <p>しかし、グローバルインストールは今回webpackを利用したいディレクトリ（プロジェクト）以外の全ての環境に影響を及ぼすため、ローカルインストールをして利用した方が良い。<br>
+                  ローカルインストール方法と、ローカルインストールしたwebpackなどのpackageの実行方法は後述する。</p>
+
+                <h2>
+                  <span id="ディレクトリ構成" class="fragment"></span><a href="#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90"><i class="fa fa-link"></i></a>ディレクトリ構成</h2>
+
+                <p>今回webpackを利用するディレクトリ構成は以下を前提とする。</p>
+
+                <div class="code-frame" data-lang="text">
+                  <div class="highlight"><pre><span></span>.
+├── package.json
+├── public
+│   ├── index.html
+│   └── js
+│       └── bundle.js
+├── src
+│   └── js
+│       ├── app.js
+│       └── modules
+│           ├── addition-calculator.js
+│           └── tax-calculator.js
+└── webpack.config.js
+</pre>
+                  </div>
+                </div>
+
+                <p>いくつかのパッケージをローカルインストールするため、<code>package.json</code>は以下のコマンドで生成する。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>npm init
+</pre>
+                  </div>
+                </div>
+
+                <h2>
+                  <span id="webpackのローカルインストール" class="fragment"></span><a href="#webpack%E3%81%AE%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a>webpackのローカルインストール</h2>
+
+                <p>上記構成のルートで以下のコマンドを実行すればwebpackをローカルインストールできる。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>npm install webpack --save-dev
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="ローカルインストールしたpackage今回はwebpackを実行するためにpathを通す" class="fragment"></span><a href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9Fpackage%E4%BB%8A%E5%9B%9E%E3%81%AFwebpack%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%ABpath%E3%82%92%E9%80%9A%E3%81%99"><i class="fa fa-link"></i></a>ローカルインストールしたpackage（今回はwebpack）を実行するためにPATHを通す
+                </h3>
+
+                <p>現状のままだと、ローカルインストールが成功しても<code>webpack</code>コマンドを実行できないため、以下のようにPATHを通す必要がある。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:./node_modules/.bin
+</pre>
+                  </div>
+                </div>
+
+                <p>※「PATHを通す」が不明な方は以下をご覧ください。</p>
+
+                <ul>
+                  <li><a href="http://qiita.com/soarflat/items/09be6ab9cd91d366bf71" id="reference-d493b3556621c5419233">PATHを通すとは？ (Mac OS X)</a></li>
+                  <li><a href="http://qiita.com/soarflat/items/d5015bec37f8a8254380" id="reference-8be9f6cc75e7c71dfe3d">PATHを通すために環境変数の設定を理解する (Mac OS X)</a></li>
+                </ul>
+
+                <h2>
+                  <span id="各ファイルの詳細" class="fragment"></span><a href="#%E5%90%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E8%A9%B3%E7%B4%B0"><i class="fa fa-link"></i></a>各ファイルの詳細</h2>
+
+                <h3>
+                  <span id="webpackconfigjswebpackの設定ファイル" class="fragment"></span><a href="#webpackconfigjswebpack%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB"><i class="fa fa-link"></i></a><code>webpack.config.js</code>（webpackの設定ファイル）</h3>
+
+                <p>webpackを利用するためには<code>webpack.config.js</code>というファイルに設定を記述する必要がある。<br>
+                  今回の設定は以下の通り。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">webpack.config.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="c1">// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく</span>
+<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// エントリーポイントの設定</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s1">'./src/js/app.js'</span><span class="p">,</span>
+  <span class="c1">// 出力の設定</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// 出力するファイル名</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">'bundle.js'</span><span class="p">,</span>
+    <span class="c1">// 出力先のパス（v2系以降は絶対パスを指定する必要がある）</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>各項目の詳細は以下の通り。</p>
+
+                <h4>
+                  <span id="entry" class="fragment"></span><a href="#entry"><i class="fa fa-link"></i></a><code>entry</code>
+                </h4>
+
+                <p>エントリーポイントの設定。複数設定することも可能。<br>
+                  エントリーポイントとはモジュール間の依存関係の解析を開始する地点のこと。<br>
+                  各モジュールを読み込んでメインの処理をするJavaScriptファイルだと認識しておけば良い。</p>
+
+                <h4>
+                  <span id="output" class="fragment"></span><a href="#output"><i class="fa fa-link"></i></a><code>output</code>
+                </h4>
+
+                <p>出力の設定。<br>
+                  出力するファイル名や出力先のパスを指定する。<br>
+                  OSによってパスが異なることを防ぐために、出力先のパスの指定には<code>path.join()</code>を利用する。</p>
+
+                <h3>
+                  <span id="appjsエントリーポイント" class="fragment"></span><a href="#appjs%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88"><i class="fa fa-link"></i></a><code>app.js</code>（エントリーポイント）</h3>
+
+                <p>2つのアイテムの価格を合算し、消費税込みの価格を出力をするエントリーポイント。<br>
+                  <code>import</code>という構文でモジュールを読み込んで利用できるため、<code>addition-calculator.js</code>と<code>tax-calculator.js</code>モジュールを<code>import</code>で読み込んで利用している。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/app.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">additionCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/addition-calculator'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">taxCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/tax-calculator'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">item1Price</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">item2Price</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">totalPrice</span> <span class="o">=</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">item1Price</span><span class="p">,</span> <span class="nx">item2Price</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">tax</span> <span class="o">=</span> <span class="mf">1.08</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">priceIncludeTax</span> <span class="o">=</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">totalPrice</span><span class="p">,</span> <span class="nx">tax</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="addition-calculatorjsモジュール" class="fragment"></span><a href="#addition-calculatorjs%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a><code>addition-calculator.js</code>（モジュール）</h3>
+
+                <p>引数の<code>number1</code>と<code>number2</code>を合算して返すモジュール。<br>
+                  <code>import</code>で読み込んで利用するためには、モジュールを定義する必要がある。<br>
+                  そのため<code>export default</code>で<code>additionCalculator</code>をモジュールとして定義している。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/modules/addition-calculator.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">number1</span> <span class="p">,</span><span class="nx">number2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">number1</span> <span class="o">+</span> <span class="nx">number2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="tax-calculatorjsモジュール" class="fragment"></span><a href="#tax-calculatorjs%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a><code>tax-calculator.js</code>（モジュール）</h3>
+
+                <p>引数<code>price</code>と<code>tax</code>を乗算して返すモジュール。<br>
+                  <code>addition-calculator.js</code>と同様に<code>export default</code>で<code>taxCalculator</code>をモジュールとして定義している。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/modules/tax-calculator.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">price</span> <span class="p">,</span><span class="nx">tax</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">price</span> <span class="o">*</span> <span class="nx">tax</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+                  </div>
+                </div>
+
+                <h2>
+                  <span id="webpackコマンドでバンドルされたファイルを出力" class="fragment"></span><a href="#webpack%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%A7%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%95%E3%82%8C%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B"><i class="fa fa-link"></i></a><code>webpack</code>コマンドでバンドルされたファイルを出力
+                </h2>
+
+                <p>上記構成の<code>webpack.config.js</code>が存在する階層で<code>webpack</code>コマンドを実行すれば、バンドルされたファイルが出力される。<br>
+                  今回の設定だと<code>bundle.js</code>という名前のファイルが<code>public/js/</code>に出力される。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>webpack
+
+<span class="c1"># 以下のような実行結果が出力される。</span>
+Hash: e9d3370b9ea43725bcb2
+Version: webpack <span class="m">3</span>.5.5
+Time: 97ms
+    Asset     Size  Chunks             Chunk Names
+bundle.js  <span class="m">3</span>.71 kB       <span class="m">0</span>  <span class="o">[</span>emitted<span class="o">]</span>  main
+   <span class="o">[</span><span class="m">0</span><span class="o">]</span> ./src/js/app.js <span class="m">371</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">1</span><span class="o">]</span> ./src/js/modules/addition-calculator.js <span class="m">93</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">2</span><span class="o">]</span> ./src/js/modules/tax-calculator.js <span class="m">88</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>出力された<code>bundle.js</code>の記述は以下のようになっている（一部記述省略）。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">public/js/bundle.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="cm">/******/</span> <span class="p">([</span>
+<span class="cm">/* 0 */</span>
+<span class="cm">/***/</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">__webpack_exports__</span><span class="p">,</span> <span class="nx">__webpack_require__</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="s2">"use strict"</span><span class="p">;</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">__webpack_exports__</span><span class="p">,</span> <span class="s2">"__esModule"</span><span class="p">,</span> <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="cm">/* harmony import */</span> <span class="kd">var</span> <span class="nx">__WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__</span> <span class="o">=</span> <span class="nx">__webpack_require__</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="cm">/* harmony import */</span> <span class="kd">var</span> <span class="nx">__WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__</span> <span class="o">=</span> <span class="nx">__webpack_require__</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+
+
+<span class="kd">var</span> <span class="nx">item1Price</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">item2Price</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">totalPrice</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">__WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__</span><span class="p">[</span><span class="s2">"a"</span> <span class="cm">/* default */</span><span class="p">])(</span><span class="nx">item1Price</span><span class="p">,</span> <span class="nx">item2Price</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">tax</span> <span class="o">=</span> <span class="mf">1.08</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">priceIncludeTax</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">__WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__</span><span class="p">[</span><span class="s2">"a"</span> <span class="cm">/* default */</span><span class="p">])(</span><span class="nx">totalPrice</span><span class="p">,</span> <span class="nx">tax</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+<span class="c1">// $('body').html(priceIncludeTax);</span>
+
+
+<span class="cm">/***/</span> <span class="p">}),</span>
+<span class="cm">/* 1 */</span>
+<span class="cm">/***/</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">__webpack_exports__</span><span class="p">,</span> <span class="nx">__webpack_require__</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="s2">"use strict"</span><span class="p">;</span>
+<span class="cm">/* harmony export (immutable) */</span> <span class="nx">__webpack_exports__</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">additionCalculator</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">number1</span> <span class="p">,</span><span class="nx">number2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">number1</span> <span class="o">+</span> <span class="nx">number2</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/***/</span> <span class="p">}),</span>
+<span class="cm">/* 2 */</span>
+<span class="cm">/***/</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">__webpack_exports__</span><span class="p">,</span> <span class="nx">__webpack_require__</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="s2">"use strict"</span><span class="p">;</span>
+<span class="cm">/* harmony export (immutable) */</span> <span class="nx">__webpack_exports__</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">taxCalculator</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">price</span> <span class="p">,</span><span class="nx">tax</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">price</span> <span class="o">*</span> <span class="nx">tax</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/***/</span> <span class="p">})</span>
+<span class="cm">/******/</span> <span class="p">]);</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>モジュールがバンドルされていることがわかる。<br>
+                  また、以下のような<code>bundle.js</code>を読み込んでいるhtmlファイルをブラウザで開き、コンソールを確認してみると正常に動作していることがわかる。</p>
+
+                <div class="code-frame" data-lang="html">
+                  <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>webpack tutorial<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"js/bundle.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>
+                  <a href="https://camo.qiitausercontent.com/85c79e7eb35dc956891eaeccd12a1921ccb76ef7/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f33343133336464352d313837352d613531362d393431612d3638623337346366353865372e6a706567" target="_blank" rel="nofollow noopener"><img width="616" alt="bundle.jpg" src="https://camo.qiitausercontent.com/85c79e7eb35dc956891eaeccd12a1921ccb76ef7/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f33343133336464352d313837352d613531362d393431612d3638623337346366353865372e6a706567" data-canonical-src="https://qiita-image-store.s3.amazonaws.com/0/69667/34133dd5-1875-a516-941a-68b374cf58e7.jpeg"></a>
+                </p>
+
+                <h3>
+                  <span id="モジュールがバンドルされたファイルを出力できたが" class="fragment"></span><a href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%8C%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%95%E3%82%8C%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%A7%E3%81%8D%E3%81%9F%E3%81%8C"><i class="fa fa-link"></i></a>モジュールがバンドルされたファイルを出力できたが
+                </h3>
+
+                <p>これだけだとwebpack（モジュールバンドラ）の何が良いのかがわからないため、メリットやなぜ利用するのかを説明していく。</p>
+
+                <h1>
+                  <span id="なぜwebpackモジュールバンドラを利用するのか" class="fragment"></span><a href="#%E3%81%AA%E3%81%9Cwebpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E3%81%AE%E3%81%8B"><i class="fa fa-link"></i></a>なぜwebpack（モジュールバンドラ）を利用するのか
+                </h1>
+
+                <ul>
+                  <li>機能ごとにファイルを分割（モジュール化）する開発ができるから</li>
+                  <li>自分が作成したモジュールだけではなく、外部モジュール（npmなどでインストールできるパッケージなど）も利用できるから</li>
+                  <li>リクエスト数を減らせるから</li>
+                  <li>依存関係を解決したファイルを出力できるから</li>
+                </ul>
+
+                <p>などモジュールの開発、再利用、バンドルなどが魅力的だから。</p>
+
+                <h2>
+                  <span id="機能ごとにファイルを分割モジュール化する開発ができる" class="fragment"></span><a href="#%E6%A9%9F%E8%83%BD%E3%81%94%E3%81%A8%E3%81%AB%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E5%89%B2%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E5%8C%96%E3%81%99%E3%82%8B%E9%96%8B%E7%99%BA%E3%81%8C%E3%81%A7%E3%81%8D%E3%82%8B"><i class="fa fa-link"></i></a>機能ごとにファイルを分割（モジュール化）する開発ができる
+                </h2>
+
+                <p>ファイルを分割（モジュール化）する開発には以下のようなメリットがある。</p>
+
+                <ul>
+                  <li>コードが見やすくなる（可読性の向上）</li>
+                  <li>開発作業の分担やテストがし易くなる</li>
+                  <li>名前空間を生成できる（変数の競合やグローバル汚染を防ぐ）</li>
+                  <li>モジュールの保守性を高められる</li>
+                  <li>モジュールの再利用性を高められる</li>
+                </ul>
+
+                <h3>
+                  <span id="コードが見やすくなる可読性の向上" class="fragment"></span><a href="#%E3%82%B3%E3%83%BC%E3%83%89%E3%81%8C%E8%A6%8B%E3%82%84%E3%81%99%E3%81%8F%E3%81%AA%E3%82%8B%E5%8F%AF%E8%AA%AD%E6%80%A7%E3%81%AE%E5%90%91%E4%B8%8A"><i class="fa fa-link"></i></a>コードが見やすくなる（可読性の向上）</h3>
+
+                <p>1つのファイルに複数の機能が書かれたコードよりも、1つのファイルに1つの機能が書かれたコードの方が見やすい。</p>
+
+                <h3>
+                  <span id="開発作業の分担やテストが容易になる" class="fragment"></span><a href="#%E9%96%8B%E7%99%BA%E4%BD%9C%E6%A5%AD%E3%81%AE%E5%88%86%E6%8B%85%E3%82%84%E3%83%86%E3%82%B9%E3%83%88%E3%81%8C%E5%AE%B9%E6%98%93%E3%81%AB%E3%81%AA%E3%82%8B"><i class="fa fa-link"></i></a>開発作業の分担やテストが容易になる</h3>
+
+                <p>1つのファイルに複数の機能が集中している場合、機能毎に担当を分けるなどの作業分担がし辛いし、テストもし辛い。<br>
+                  機能ごとにファイルを分割していれば、作業分担やテストがし易い。</p>
+
+                <h3>
+                  <span id="名前空間を生成できる変数の競合やグローバル汚染を防ぐ" class="fragment"></span><a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E3%82%92%E7%94%9F%E6%88%90%E3%81%A7%E3%81%8D%E3%82%8B%E5%A4%89%E6%95%B0%E3%81%AE%E7%AB%B6%E5%90%88%E3%82%84%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%90%E3%83%AB%E6%B1%9A%E6%9F%93%E3%82%92%E9%98%B2%E3%81%90"><i class="fa fa-link"></i></a>名前空間を生成できる（変数の競合やグローバル汚染を防ぐ）
+                </h3>
+
+                <p>モジュール毎に名前空間を割り当てれば、変数の競合やグローバル汚染を防げる。</p>
+
+                <h3>
+                  <span id="モジュールの保守性を高められる" class="fragment"></span><a href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BF%9D%E5%AE%88%E6%80%A7%E3%82%92%E9%AB%98%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B"><i class="fa fa-link"></i></a>モジュールの保守性を高められる</h3>
+
+                <p>モジュールは他のコードとの依存性が少なくあるべきなので、しっかり設計をすれば変更や拡張がしやすくなる。<br>
+                  ファイルを分割すればモジュールになるわけではなく、あるモジュールを修正するために他のコードに大きな影響を与える場合、それはモジュールとは言えないため注意。</p>
+
+                <h3>
+                  <span id="モジュールの再利用性を高められる" class="fragment"></span><a href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E5%86%8D%E5%88%A9%E7%94%A8%E6%80%A7%E3%82%92%E9%AB%98%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B"><i class="fa fa-link"></i></a>モジュールの再利用性を高められる</h3>
+
+                <p>汎用性の高いモジュールを開発すれば再利用できて便利。<br>
+                  コードをコピペで再利用する場合だと、修正時にコピペしたファイルを全て修正する必要があるが、モジュールとしてファイルを分割しておけば1つのファイルを修正するだけで済む。</p>
+
+                <h2>
+                  <span id="自分が作成したモジュールだけではなく外部モジュールnpmなどでインストールできるパッケージなども利用できる" class="fragment"></span><a href="#%E8%87%AA%E5%88%86%E3%81%8C%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%A0%E3%81%91%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F%E5%A4%96%E9%83%A8%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%ABnpm%E3%81%AA%E3%81%A9%E3%81%A7%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A7%E3%81%8D%E3%82%8B%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AA%E3%81%A9%E3%82%82%E5%88%A9%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B"><i class="fa fa-link"></i></a>自分が作成したモジュールだけではなく、外部モジュール（npmなどでインストールできるパッケージなど）も利用できる
+                </h2>
+
+                <p>試しに外部モジュールのjQueryを利用してみる。まずは<code>jquery</code>をローカルインストールする。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>npm install jquery --save
+</pre>
+                  </div>
+                </div>
+
+                <p>インストールしたパッケージは他のモジュール同様、<code>import</code>で読み込みモジュールとして利用できる。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/app.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">$</span> <span class="nx">from</span> <span class="s1">'jquery'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">additionCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/addition-calculator'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">taxCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/tax-calculator'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">item1Price</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">item2Price</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">totalPrice</span> <span class="o">=</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">item1Price</span><span class="p">,</span> <span class="nx">item2Price</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">tax</span> <span class="o">=</span> <span class="mf">1.08</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">priceIncludeTax</span> <span class="o">=</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">totalPrice</span><span class="p">,</span> <span class="nx">tax</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'body'</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>上記の状態で<code>webpack</code>コマンドを実行すると<code>jquery</code>もバンドルされたファイルが出力される。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>webpack
+
+<span class="c1"># 以下のような実行結果が出力される。</span>
+Hash: 3c0ce07e2a811f5a391f
+Version: webpack <span class="m">3</span>.5.5
+Time: 416ms
+    Asset    Size  Chunks                    Chunk Names
+bundle.js  <span class="m">272</span> kB       <span class="m">0</span>  <span class="o">[</span>emitted<span class="o">]</span>  <span class="o">[</span>big<span class="o">]</span>  main
+   <span class="o">[</span><span class="m">0</span><span class="o">]</span> ./src/js/app.js <span class="m">391</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">2</span><span class="o">]</span> ./src/js/modules/addition-calculator.js <span class="m">93</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">3</span><span class="o">]</span> ./src/js/modules/tax-calculator.js <span class="m">88</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+    + <span class="m">1</span> hidden module
+</pre>
+                  </div>
+                </div>
+
+                <p><code>bundle.js</code>を読み込んでいるhtmlファイルをブラウザで確認してみると、jQueryもバンドルされて正常に動作していることがわかる。</p>
+
+                <p>
+                  <a href="https://camo.qiitausercontent.com/d91db60053619f9959b6bd8ca428c3e5678f8dc4/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f39306665616538342d613961312d613431362d373239332d3963613537383736623339352e6a706567" target="_blank" rel="nofollow noopener"><img src="https://camo.qiitausercontent.com/d91db60053619f9959b6bd8ca428c3e5678f8dc4/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f36393636372f39306665616538342d613961312d613431362d373239332d3963613537383736623339352e6a706567" alt="webpack2.jpg" data-canonical-src="https://qiita-image-store.s3.amazonaws.com/0/69667/90feae84-a9a1-a416-7293-9ca57876b395.jpeg"></a>
+                </p>
+
+                <p>外部モジュールを利用できたが、</p>
+
+                <ul>
+                  <li>「わざわざファイルをまとめずに、scriptタグでjQuery読み込めば良いのでは？」</li>
+                </ul>
+
+                <p>と思った方は多々いると思うのし、確かにちょっとしたコードを書く程度ならそちらの方が楽。<br>
+                  しかし、後述するメリットを考慮するとjQueryのような外部モジュールもバンドルした方が良い時もある。</p>
+
+                <h2>
+                  <span id="リクエスト数を減らせる" class="fragment"></span><a href="#%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E6%95%B0%E3%82%92%E6%B8%9B%E3%82%89%E3%81%9B%E3%82%8B"><i class="fa fa-link"></i></a>リクエスト数を減らせる</h2>
+
+                <p>以下はjQueryを読み込み、jQueryに依存している<code>app.js</code>を読み込んでいるhtmlファイルだと想定する。</p>
+
+                <div class="code-frame" data-lang="html">
+                  <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>webpack tutorial<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://code.jquery.com/jquery-3.1.1.min.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"js/app.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>上記のようなファイルは以下の懸念点がある。</p>
+
+                <ul>
+                  <li>現在は1つのライブラリだけ読み込んでいるが、必要なライブラリが増えてリクエスト数が増える可能性がある（リクエスト数の増加はパフォーマンス上良くない）。</li>
+                </ul>
+
+                <p>webpackを利用すればファイルをバンドルできるため、リクエスト数を減らせる。</p>
+
+                <div class="code-frame" data-lang="html">
+                  <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>webpack tutorial<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- jQueryもバンドルされたファイル --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"js/bundle.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>しかし、全てのファイルを1つにバンドルする場合、以下の懸念点が考えられる。</p>
+
+                <ul>
+                  <li>ファイルサイズが非常に大きくなり読み込み時間がかかる。</li>
+                </ul>
+
+                <p>バンドルしたファイルを分割して出力したり、それらのファイルを非同期読み込みするなどの機能があるのでそれらを利用する。</p>
+
+                <ul>
+                  <li>キャッシュを活用できない。</li>
+                </ul>
+
+                <p>ライブラリは頻繁に変更しないファイルのため、キャッシュを活用すべきだが、全てのファイルを1つにバンドルするとそれができない。<br>
+                  そのため、頻繁に変更するファイルのバンドルと、ライブラリ群をまとめたバンドルは別にして出力する（CommonsChunkPluginというプラグインが必要）。</p>
+
+                <h2>
+                  <span id="依存関係を解決したファイルを出力できる" class="fragment"></span><a href="#%E4%BE%9D%E5%AD%98%E9%96%A2%E4%BF%82%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%A7%E3%81%8D%E3%82%8B"><i class="fa fa-link"></i></a>依存関係を解決したファイルを出力できる
+                </h2>
+
+                <p>以下はjQueryを読み込み、jQueryに依存している<code>app.js</code>を読み込んでいるhtmlファイルだと想定する。<br>
+                  <code>app.js</code>はjQueryに依存しているため、jQueryを読み込む前に<code>app.js</code>を読み込むと動かない。</p>
+
+                <div class="code-frame" data-lang="html">
+                  <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>webpack tutorial<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- app.jsはjQueryに依存しているため、jQueryを読み込んだ後に読み込む必要がある。 --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://code.jquery.com/jquery-3.1.1.min.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"js/app.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>上記のようなファイルは以下の懸念点がある。</p>
+
+                <ul>
+                  <li>依存しているライブラリが1つだけなら良いが、依存が増えれば増えるほど依存関係がわかり辛くなる。</li>
+                  <li>それぞれのファイルの依存関係をすぐに理解できるのは作業をした人間のみであり、別の作業者が依存関係をすぐに理解するのは困難。</li>
+                  <li>依存関係が複雑になればなるほど、迂闊にスクリプトの読み込み順を変更したり本来不要なファイルを削除できなくなる。</li>
+                </ul>
+
+                <p>webpackを利用すれば依存関係を解決してファイルをバンドルするため、スクリプトの順番を考慮する必要はなくなり依存関係に悩まされる可能性は低くなる。</p>
+
+                <div class="code-frame" data-lang="html">
+                  <div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>webpack tutorial<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- 依存関係を解決してまとめられたファイル --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"js/bundle.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>また、依存するパッケージ（モジュール）を<code>package.json</code>に明記し、それらの利用を促せば以下のような事態に陥る可能性は低くなる。</p>
+
+                <ul>
+                  <li>理由もなく作業者によって利用するライブラリのバージョンが異なる。</li>
+                  <li>1ページに同じライブラリが複数読み込まれてしまっている。</li>
+                  <li>同じライブラリが様々なディレクトリに存在する。誰がどこで何のために利用しているのかわからないため迂闊に消せない。</li>
+                </ul>
+
+                <h2>
+                  <span id="webpackモジュールバンドラの使いどころ" class="fragment"></span><a href="#webpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%81%AE%E4%BD%BF%E3%81%84%E3%81%A9%E3%81%93%E3%82%8D"><i class="fa fa-link"></i></a>webpack（モジュールバンドラ）の使いどころ</h2>
+
+                <p>上記のメリットや機能が必要に感じたり、魅了に感じる状況であれば利用すべき。<br>
+                  逆にすぐに捨てるコードや2〜30行程度のコンパクトなコードを書く程度なら必要ないと思う。</p>
+
+                <p>webpackは非常に多くの機能が存在し、細かい設定ができるため<code>webpack.config.js</code>の内容を理解せずにコピペして利用するはやめた方が良い。<br>
+                  利用用途に合わせて<code>webpack.config.js</code>を用意するべき。</p>
+
+                <p>とは言え、全ての機能を完全に理解するのは困難なので、頻繁に利用しそうな機能を紹介していく。</p>
+
+                <h1>
+                  <span id="webpackの様々な機能" class="fragment"></span><a href="#webpack%E3%81%AE%E6%A7%98%E3%80%85%E3%81%AA%E6%A9%9F%E8%83%BD"><i class="fa fa-link"></i></a>webpackの様々な機能</h1>
+
+                <h2>
+                  <span id="watchモード" class="fragment"></span><a href="#watch%E3%83%A2%E3%83%BC%E3%83%89"><i class="fa fa-link"></i></a>watchモード</h2>
+
+                <p>ファイルを監視して変更があったらビルドを再実行する機能のこと。<br>
+                  watchモードでは基本的にキャッシュが有効になるため、ビルド時間が短くなる。<br>
+                  オプションを指定して<code>webpack</code>コマンドを実行するか、<code>webpack.config.js</code>に設定を記述することで利用できる。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>webpack --watch
+</pre>
+                  </div>
+                </div>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// watchモードを有効にする</span>
+  <span class="nx">watch</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s2">"./app.js"</span><span class="p">,</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s2">"bundle.js"</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+                  </div>
+                </div>
+
+                <h2>
+                  <span id="ローダー" class="fragment"></span><a href="#%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC"><i class="fa fa-link"></i></a>ローダー</h2>
+
+                <p>画像やCSSなどのJavaScript以外のファイルをJavaScriptで扱えるように変換したり、バンドルする前にモジュールに対して実行する機能のこと。<br>
+                  TypeScriptをJavaScriptに変換、画像をDataURLに変換、コードをチェックするなど、ローダーによって機能は様々。</p>
+
+                <h3>
+                  <span id="babel-loader" class="fragment"></span><a href="#babel-loader"><i class="fa fa-link"></i></a><code>babel-loader</code>
+                </h3>
+
+                <p>ES2015（ES6）のコードをES5のコードに変換するローダー。</p>
+
+                <p>ローダーを利用するためにはそれに応じたパッケージをインストールしておく必要がある。<br>
+                  <code>babel-loader</code>を利用するために以下のパッケージをインストールする。</p>
+
+                <div class="code-frame" data-lang="text">
+                  <div class="highlight"><pre><span></span>npm install babel-loader babel-core babel-preset-env --save-dev
+</pre>
+                  </div>
+                </div>
+
+                <p>インストール後、<code>webpack.config.js</code>に<code>babel-loader</code>の設定を追加する。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">webpack.config.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="c1">// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく</span>
+<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// エントリーポイントの設定</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s1">'./src/js/app.js'</span><span class="p">,</span>
+  <span class="c1">// 出力の設定</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// 出力するファイル名</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">'bundle.js'</span><span class="p">,</span>
+    <span class="c1">// 出力先のパス（v2系以降は絶対パスを指定する必要がある）</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">},</span>
+  <span class="c1">// ローダーの設定</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="c1">// ローダーの処理対象ファイル</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="c1">// ローダーの処理対象から外すディレクトリ</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="c1">// 利用するローダー</span>
+      <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}],</span>
+    <span class="p">}],</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>上記の設定で<code>webpack</code>コマンドを実行すれば、以下のようなES2015（ES6）のコードをどのブラウザでも動くように変換してくれる。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/app.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">$</span> <span class="nx">from</span> <span class="s1">'jquery'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">additionCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/addition-calculator'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">taxCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/tax-calculator'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">item1Price</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">item2Price</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">totalPrice</span> <span class="o">=</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">item1Price</span><span class="p">,</span> <span class="nx">item2Price</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">tax</span> <span class="o">=</span> <span class="mf">1.08</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">priceIncludeTax</span> <span class="o">=</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">totalPrice</span><span class="p">,</span> <span class="nx">tax</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'body'</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="eslint-loader" class="fragment"></span><a href="#eslint-loader"><i class="fa fa-link"></i></a><code>eslint-loader</code>
+                </h3>
+
+                <p>JavaScriptのコードを検証するローダー。</p>
+
+                <p><code>eslint-loader</code>を利用するために以下のパッケージをインストールする。</p>
+
+                <div class="code-frame" data-lang="text">
+                  <div class="highlight"><pre><span></span>npm install eslint eslint-loader --save-dev
+</pre>
+                  </div>
+                </div>
+
+                <p>インストール後、<code>webpack.config.js</code>に<code>eslint-loader</code>の設定を追加する。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">webpack.config.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="c1">// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく</span>
+<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// エントリーポイントの設定</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s1">'./src/js/app.js'</span><span class="p">,</span>
+  <span class="c1">// 出力の設定</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// 出力するファイル名</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">'bundle.js'</span><span class="p">,</span>
+    <span class="c1">// 出力先のパス（v2系以降は絶対パスを指定する必要がある）</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">},</span>
+  <span class="c1">// ローダーの設定</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="c1">// ローダーの処理対象ファイル</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="c1">// ローダーの処理対象から外すディレクトリ</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="c1">// 利用するローダー</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="c1">// ローダーのオプション</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}],</span>
+    <span class="p">},</span> <span class="p">{</span>
+      <span class="c1">// enforce: 'pre'を指定することによって</span>
+      <span class="c1">// enforce: 'pre'がついていないローダーより早く処理が実行される</span>
+      <span class="c1">// 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要</span>
+      <span class="nx">enforce</span><span class="o">:</span> <span class="s1">'pre'</span><span class="p">,</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s1">'eslint-loader'</span><span class="p">,</span>
+    <span class="p">}],</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+</pre>
+                  </div>
+                </div>
+
+                <p><code>babel-loader</code>の設定記述とほとんど変わりないが、<code>babel-loader</code>で変換する前にコードを検証したいため<code>enforce: 'pre'</code>を指定する。</p>
+
+                <p>また、<code>eslint</code>の設定ファイルである<code>.eslintrc</code>も追加する。<br>
+                  ※webpackの解説記事のため、設定項目の詳細は割愛します。</p>
+
+                <div class="code-frame" data-lang="json">
+                  <div class="code-lang"><span class="bold">.eslintrc</span></div>
+                  <div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">"extends"</span><span class="p">:</span> <span class="s2">"eslint:recommended"</span><span class="p">,</span>
+  <span class="nt">"parserOptions"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"ecmaVersion"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">"sourceType"</span><span class="p">:</span> <span class="s2">"module"</span>
+  <span class="p">},</span>
+  <span class="nt">"env"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"browser"</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+                  </div>
+                </div>
+
+                <p><code>.eslintrc</code>は<code>package.json</code>と同じ階層に追加するため、ディレクトリ構成は以下の通り。</p>
+
+                <div class="code-frame" data-lang="text">
+                  <div class="highlight"><pre><span></span>.
+├── .eslintrc
+├── package.json
+├── public
+│   ├── index.html
+│   └── js
+│       └── bundle.js
+├── src
+│   └── js
+│       ├── app.js
+│       └── modules
+│           ├── addition-calculator.js
+│           └── tax-calculator.js
+└── webpack.config.js
+</pre>
+                  </div>
+                </div>
+
+                <p>上記の設定で<code>webpack</code>コマンドを実行すれば、以下のように検証結果が出力される。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>ERROR in ./src/js/app.js
+
+/Users/mac/GitHub/prototype/webpack-v3-tutorial/src/js/app.js
+  <span class="m">11</span>:1  error  Unexpected console statement  no-console
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="ローダーを設定する書き方は色々ある" class="fragment"></span><a href="#%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E6%9B%B8%E3%81%8D%E6%96%B9%E3%81%AF%E8%89%B2%E3%80%85%E3%81%82%E3%82%8B"><i class="fa fa-link"></i></a>ローダーを設定する書き方は色々ある</h3>
+
+                <p>ローダーを設定する書き方は色々あり、上記の<code>babel-loader</code>の設定は以下のようにも書ける。</p>
+
+                <div class="code-frame" data-lang="JavaScript">
+                  <div class="highlight"><pre><span></span><span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+    <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+    <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+    <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader?presets[]=env'</span>
+    <span class="p">}],</span>
+  <span class="p">}],</span>
+<span class="p">},</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>以下のように<code>use</code>を省略して書くこともできる。</p>
+
+                <div class="code-frame" data-lang="JavaScript">
+                  <div class="highlight"><pre><span></span><span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+    <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+    <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+    <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+    <span class="p">},</span>
+  <span class="p">}],</span>
+<span class="p">},</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>以下のように<code>use</code>を利用すると、ローダーを複数指定すること等が可能なため、状況に応じて使い分ける。</p>
+
+                <div class="code-frame" data-lang="JavaScript">
+                  <div class="highlight"><pre><span></span><span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+    <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+    <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+    <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+        <span class="p">},</span>
+      <span class="p">},</span> <span class="p">{</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'jshint-loader'</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}],</span>
+<span class="p">},</span>
+</pre>
+                  </div>
+                </div>
+
+                <h2>
+                  <span id="プラグイン" class="fragment"></span><a href="#%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3"><i class="fa fa-link"></i></a>プラグイン</h2>
+
+                <p>モジュールのバンドル時に実行される様々な処理のこと。今回はいくつかプラグインを追加してみる。<br>
+                  プラグインを利用するためには<code>webpack.config.js</code>上で<code>webpack</code>を読み込む必要があるためローカルインストールする。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>npm install webpack --save-dev
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="uglifyjsplugin" class="fragment"></span><a href="#uglifyjsplugin"><i class="fa fa-link"></i></a><code>UglifyJsPlugin</code>
+                </h3>
+
+                <p>JavaScriptを圧縮するプラグイン。<br>
+                  以下は<code>webpack.config.js</code>に<code>UglifyJsPlugin</code>を追加したもの。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">webpack.config.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="c1">// UglifyJsPluginなどのプラグインを利用するためにwebpackを読み込んでおく必要がある。</span>
+<span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webpack'</span><span class="p">);</span>
+
+<span class="c1">// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく</span>
+<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// エントリーポイントの設定</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s1">'./src/js/app.js'</span><span class="p">,</span>
+  <span class="c1">// 出力の設定</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// 出力するファイル名</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">'bundle.js'</span><span class="p">,</span>
+    <span class="c1">// 出力先のパス（v2系以降は絶対パスを指定する必要がある）</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">},</span>
+  <span class="c1">// ローダーの設定</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="c1">// ローダーの処理対象ファイル</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="c1">// ローダーの処理対象から外すディレクトリ</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="c1">// 利用するローダー</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="c1">// ローダーのオプション</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}],</span>
+    <span class="p">},</span> <span class="p">{</span>
+      <span class="c1">// enforce: 'pre'を指定することによって</span>
+      <span class="c1">// enforce: 'pre'がついていないローダーより早く処理が実行される</span>
+      <span class="c1">// 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要</span>
+      <span class="nx">enforce</span><span class="o">:</span> <span class="s1">'pre'</span><span class="p">,</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s1">'eslint-loader'</span><span class="p">,</span>
+    <span class="p">}],</span>
+  <span class="p">},</span>
+  <span class="c1">// プラグインの設定</span>
+  <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">optimize</span><span class="p">.</span><span class="nx">UglifyJsPlugin</span><span class="p">({</span>
+      <span class="nx">compress</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// console.log（）などのconsole.*系の記述を取り除いて出力する</span>
+        <span class="nx">drop_console</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">},</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">};</span>
+</pre>
+                  </div>
+                </div>
+
+                <p>上記の設定で<code>webpack</code>コマンドを実行すれば、圧縮されたファイル（圧縮前は278KB）が出力される。</p>
+
+                <div class="code-frame" data-lang="sh">
+                  <div class="highlight"><pre><span></span>webpack
+
+<span class="c1"># 以下のような実行結果が出力される。</span>
+Hash: 28f48b1d156e32bebdc7
+Version: webpack <span class="m">3</span>.5.5
+Time: 2433ms
+    Asset     Size  Chunks             Chunk Names
+bundle.js  <span class="m">88</span>.3 kB       <span class="m">0</span>  <span class="o">[</span>emitted<span class="o">]</span>  main
+   <span class="o">[</span><span class="m">0</span><span class="o">]</span> ./src/js/app.js <span class="m">747</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">2</span><span class="o">]</span> ./src/js/modules/addition-calculator.js <span class="m">195</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+   <span class="o">[</span><span class="m">3</span><span class="o">]</span> ./src/js/modules/tax-calculator.js <span class="m">185</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+    + <span class="m">1</span> hidden module
+</pre>
+                  </div>
+                </div>
+
+                <p>プラグインを利用せず、以下のコマンドでも圧縮したファイルが出力される。</p>
+
+                <div class="code-frame" data-lang="text">
+                  <div class="highlight"><pre><span></span>webpack -p
+</pre>
+                  </div>
+                </div>
+
+                <p>ビルドする度にファイルが圧縮されるのは好ましくない場合はコマンドで実行する。</p>
+
+                <h3>
+                  <span id="provideplugin" class="fragment"></span><a href="#provideplugin"><i class="fa fa-link"></i></a><code>ProvidePlugin</code>
+                </h3>
+
+                <p>指定したモジュールをすべてのファイル（モジュール）の変数として利用可能にするプラグイン。<br>
+                  利用可能にしたモジュールは<code>import</code>などで読み込む必要がなくなる。<br>
+                  以下は<code>webpack.config.js</code>に<code>ProvidePlugin</code>を追加したもの。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">webpack.config.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="c1">// UglifyJsPluginなどのプラグインを利用するためにwebpackを読み込んでおく必要がある。</span>
+<span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webpack'</span><span class="p">);</span>
+
+<span class="c1">// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく</span>
+<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'path'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// エントリーポイントの設定</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="s1">'./src/js/app.js'</span><span class="p">,</span>
+  <span class="c1">// 出力の設定</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// 出力するファイル名</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">'bundle.js'</span><span class="p">,</span>
+    <span class="c1">// 出力先のパス（v2系以降は絶対パスを指定する必要がある）</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'public/js'</span><span class="p">)</span>
+  <span class="p">},</span>
+  <span class="c1">// ローダーの設定</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">rules</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="c1">// ローダーの処理対象ファイル</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="c1">// ローダーの処理対象から外すディレクトリ</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+        <span class="c1">// 利用するローダー</span>
+        <span class="nx">loader</span><span class="o">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="c1">// ローダーのオプション</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span><span class="s1">'env'</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}],</span>
+    <span class="p">},</span> <span class="p">{</span>
+      <span class="c1">// enforce: 'pre'を指定することによって</span>
+      <span class="c1">// enforce: 'pre'がついていないローダーより早く処理が実行される</span>
+      <span class="c1">// 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要</span>
+      <span class="nx">enforce</span><span class="o">:</span> <span class="s1">'pre'</span><span class="p">,</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s1">'eslint-loader'</span><span class="p">,</span>
+    <span class="p">}],</span>
+  <span class="p">},</span>
+  <span class="c1">// プラグインの設定</span>
+  <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">optimize</span><span class="p">.</span><span class="nx">UglifyJsPlugin</span><span class="p">({</span>
+      <span class="nx">compress</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// console.log（）などのconsole.*系の記述を取り除いて出力する</span>
+        <span class="nx">drop_console</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">},</span>
+    <span class="p">}),</span>
+    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
+      <span class="nx">$</span><span class="o">:</span> <span class="s1">'jquery'</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">};</span>
+</pre>
+                  </div>
+                </div>
+
+                <p><code>jquery</code>を全てのモジュール上で変数<code>$</code>として利用できるようにしたため、<code>app.js</code>の<code>jquery</code>を読み込む記述を消しても正常に動作する。</p>
+
+                <div class="code-frame" data-lang="js">
+                  <div class="code-lang"><span class="bold">src/js/app.js</span></div>
+                  <div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">additionCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/addition-calculator'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">taxCalculator</span> <span class="nx">from</span> <span class="s1">'./modules/tax-calculator'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">item1Price</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">item2Price</span> <span class="o">=</span> <span class="mi">600</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">totalPrice</span> <span class="o">=</span> <span class="nx">additionCalculator</span><span class="p">(</span><span class="nx">item1Price</span><span class="p">,</span> <span class="nx">item2Price</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">tax</span> <span class="o">=</span> <span class="mf">1.08</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">priceIncludeTax</span> <span class="o">=</span> <span class="nx">taxCalculator</span><span class="p">(</span><span class="nx">totalPrice</span><span class="p">,</span> <span class="nx">tax</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'body'</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">priceIncludeTax</span><span class="p">);</span>
+</pre>
+                  </div>
+                </div>
+
+                <h3>
+                  <span id="commonschunkplugin" class="fragment"></span><a href="#commonschunkplugin"><i class="fa fa-link"></i></a><code>CommonsChunkPlugin</code>
+                </h3>
+
+                <p>複数のエントリーポイント間で利用できる共通のモジュールをバンドルしたファイルを出力するプラグイン。</p>
+
+                <p>※詳細は別の記事に書きましたので、こちらを参考にしてください（こちらの記事はv1系のままなので後日更新します）。<br>
+                  <a href="http://qiita.com/soarflat/items/f8212434c4c3cb8ee00d" id="reference-ec0eb64f83e3ba9d6ff6">webpackのCommonsChunkPluginの使い方、使い所</a></p>
+
+                <h1>
+                  <span id="終わり" class="fragment"></span><a href="#%E7%B5%82%E3%82%8F%E3%82%8A"><i class="fa fa-link"></i></a>終わり</h1>
+
+                <p>今後もフロントエンド開発は大規模かつ複雑になると思うのでモジュール化を考慮した開発は普段から意識しておいて損はないです。<br>
+                  とは言え、いきなり自分でモジュールを開発するのも難しいと思うため、まずは外部モジュールの利用から始めてみると良いと思います。<br>
+                  興味を持った方やより深く知りたい方は<a href="https://webpack.js.org/" rel="nofollow noopener" target="_blank">ドキュメント</a>を見ることをお勧めします。</p>
+                <div class="hidden">
+                  <form class="js-task-list-update" action="/soarflat/items/28bf799f7e0335b68186" accept-charset="UTF-8" method="post">
+                    <input name="utf8" type="hidden" value="&#x2713;"/><input type="hidden" name="_method" value="patch"/><input type="hidden" name="authenticity_token" value="5H5wbqrzyvhOai9cAR9sSExbioChonYBcNfTGjN8jxN2QPDKk1ESypEfSm1pAVj1Blu/J6bVoiUK/ry8ttLDvA=="/><input type="hidden" name="updated_at_confirmation_in_unixtime" id="updated_at_confirmation_in_unixtime" value="1511170164" class="js-task-list-updated-at"/><textarea name="raw_body" id="raw_body" class="js-task-list-field">
+# はじめに
+webpackに関して説明する機会があったため、それらに関してまとめました。
+
+- 「gulpは使ってるけどwebpackはちょっと...」
+- 「webpack.config.jsの中身を見てみたが、何を書いているのか理解できなくて諦めた」
+- 「何が便利なのかよくわからない」
+- 「別にwebpack使わなくても実装はできるから必要なくない？」
+
+といった人達向けに書いた記事であり、
+
+- webpackに関しての基本情報、利用用途、機能を理解する。
+- そもそもモジュールバンドラとは何か、なぜモジュールバンドラを利用するのかを理解する。
+
+ことを目的としています。
+
+解説に利用しているコードの最終形態はGitHub上にあります。
+[webpack-v3-tutorial](https://github.com/soarflat-sandbox/webpack-v3-tutorial)
+
+webpack v1系の解説、コードは以下に移動しましたので、必要であればご参照ください。
+[webpack-v1-tutorial](https://github.com/soarflat-sandbox/webpack-v1-tutorial)
+
+## 本記事の前提や注意点
+
+- webpackのバージョンは3系を対象にしています。
+- gulpを触ったことがある人向けの記事なので`npm install`などnpmに関する説明は省きます。
+- webpackとモジュールバンドラに関しての記事なのでgulpでwebpackを利用する方法は記載していないです。
+- webpackは画像やCSSなどもモジュールにしてまとめることができますが、今回はJavaScriptに焦点を当てた説明をしています。
+
+# webpackとは
+モジュールバンドラのこと。
+
+## モジュールバンドラとは
+複数のモジュールを1つにまとめたファイルを出力するツールのこと（簡潔に言ってしまえば）。
+※出力設定によっては複数のファイルを出力することもあります。
+
+webpack以外に、以下のようなモジュールバンドラが存在する。
+
+- Browserify
+- RequireJS
+
+## webpack（モジュールバンドラ）関連の記事でよく利用されている用語
+
+### モジュール
+機能ごとに分割されたファイルのこと。
+そのため、webpackは複数のファイルをまとめたファイルを出力するツールと認識しておけばとりあえずは問題ない。
+
+### バンドル
+まとめられたファイルのこと。バンドルファイルとも言う。
+そのため、以下の言葉の意味は大体同じ。
+
+- 「バンドルが大きい」 = 「まとめられたファイルのサイズが大きい」
+- 「バンドルを生成する」 = 「まとめられたファイルを生成する」
+
+### バンドルする
+「まとめる」という意味で使われていることが多い。
+そのため、以下の言葉の意味は大体同じ。
+
+- 「モジュールをまとめる」 = 「モジュールをバンドルする」
+
+### ビルド
+webpackにおいての「ビルド」は「バンドルを出力するまでの一連の処理」という意味で使われていることが多い（気がする）。
+そのため、以下の言葉の意味は大体同じ。
+
+- 「ビルドする」 = 「バンドルを出力するまでの一連の処理を実行する」
+- 「ビルドが遅い」 = 「バンドルを出力するまでの一連の処理が遅い」
+
+# webpackを利用してみる
+webpackを利用してモジュールをバンドルしたファイルを出力してみる。
+以下は出力までのイメージ図。
+
+![webpack.jpg](https://qiita-image-store.s3.amazonaws.com/0/69667/4257d09c-03fa-f952-dd70-a57d77f0f213.jpeg)
+
+## webpackのインストール
+以下のコマンドでグローバルインストールできる。
+
+```sh
+npm install webpack -g
+```
+
+しかし、グローバルインストールは今回webpackを利用したいディレクトリ（プロジェクト）以外の全ての環境に影響を及ぼすため、ローカルインストールをして利用した方が良い。
+ローカルインストール方法と、ローカルインストールしたwebpackなどのpackageの実行方法は後述する。
+
+## ディレクトリ構成
+今回webpackを利用するディレクトリ構成は以下を前提とする。
+
+```
+.
+├── package.json
+├── public
+│   ├── index.html
+│   └── js
+│       └── bundle.js
+├── src
+│   └── js
+│       ├── app.js
+│       └── modules
+│           ├── addition-calculator.js
+│           └── tax-calculator.js
+└── webpack.config.js
+```
+
+いくつかのパッケージをローカルインストールするため、`package.json`は以下のコマンドで生成する。
+
+```sh
+npm init
+```
+
+## webpackのローカルインストール
+上記構成のルートで以下のコマンドを実行すればwebpackをローカルインストールできる。
+
+```sh
+npm install webpack --save-dev
+```
+
+### ローカルインストールしたpackage（今回はwebpack）を実行するためにPATHを通す
+現状のままだと、ローカルインストールが成功しても`webpack`コマンドを実行できないため、以下のようにPATHを通す必要がある。
+
+```sh
+export PATH=$PATH:./node_modules/.bin
+```
+
+※「PATHを通す」が不明な方は以下をご覧ください。
+
+- [PATHを通すとは？ (Mac OS X)](http://qiita.com/soarflat/items/09be6ab9cd91d366bf71)
+- [PATHを通すために環境変数の設定を理解する (Mac OS X)](http://qiita.com/soarflat/items/d5015bec37f8a8254380)
+
+## 各ファイルの詳細
+
+### `webpack.config.js`（webpackの設定ファイル）
+webpackを利用するためには`webpack.config.js`というファイルに設定を記述する必要がある。
+今回の設定は以下の通り。
+
+```js:webpack.config.js
+// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // エントリーポイントの設定
+  entry: &#39;./src/js/app.js&#39;,
+  // 出力の設定
+  output: {
+    // 出力するファイル名
+    filename: &#39;bundle.js&#39;,
+    // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
+    path: path.join(__dirname, &#39;public/js&#39;)
+  }
+};
+```
+
+各項目の詳細は以下の通り。
+
+#### `entry`
+エントリーポイントの設定。複数設定することも可能。
+エントリーポイントとはモジュール間の依存関係の解析を開始する地点のこと。
+各モジュールを読み込んでメインの処理をするJavaScriptファイルだと認識しておけば良い。
+
+#### `output`
+出力の設定。
+出力するファイル名や出力先のパスを指定する。
+OSによってパスが異なることを防ぐために、出力先のパスの指定には`path.join()`を利用する。
+
+### `app.js`（エントリーポイント）
+2つのアイテムの価格を合算し、消費税込みの価格を出力をするエントリーポイント。
+`import`という構文でモジュールを読み込んで利用できるため、`addition-calculator.js`と`tax-calculator.js`モジュールを`import`で読み込んで利用している。
+
+```js:src/js/app.js
+import additionCalculator from &#39;./modules/addition-calculator&#39;;
+import taxCalculator from &#39;./modules/tax-calculator&#39;;
+
+var item1Price = 400;
+var item2Price = 600;
+var totalPrice = additionCalculator(item1Price, item2Price);
+var tax = 1.08;
+var priceIncludeTax = taxCalculator(totalPrice, tax);
+
+console.log(priceIncludeTax);
+```
+
+### `addition-calculator.js`（モジュール）
+引数の`number1`と`number2`を合算して返すモジュール。
+`import`で読み込んで利用するためには、モジュールを定義する必要がある。
+そのため`export default`で`additionCalculator`をモジュールとして定義している。
+
+```js:src/js/modules/addition-calculator.js
+export default function additionCalculator(number1 ,number2) {
+  return number1 + number2;
+}
+```
+
+### `tax-calculator.js`（モジュール）
+引数`price`と`tax`を乗算して返すモジュール。
+`addition-calculator.js`と同様に`export default`で`taxCalculator`をモジュールとして定義している。
+
+```js:src/js/modules/tax-calculator.js
+export default function taxCalculator(price ,tax) {
+  return Math.round(price * tax);
+}
+```
+
+## `webpack`コマンドでバンドルされたファイルを出力
+上記構成の`webpack.config.js`が存在する階層で`webpack`コマンドを実行すれば、バンドルされたファイルが出力される。
+今回の設定だと`bundle.js`という名前のファイルが`public/js/`に出力される。
+
+```sh
+webpack
+
+# 以下のような実行結果が出力される。
+Hash: e9d3370b9ea43725bcb2
+Version: webpack 3.5.5
+Time: 97ms
+    Asset     Size  Chunks             Chunk Names
+bundle.js  3.71 kB       0  [emitted]  main
+   [0] ./src/js/app.js 371 bytes {0} [built]
+   [1] ./src/js/modules/addition-calculator.js 93 bytes {0} [built]
+   [2] ./src/js/modules/tax-calculator.js 88 bytes {0} [built]
+```
+
+出力された`bundle.js`の記述は以下のようになっている（一部記述省略）。
+
+```js:public/js/bundle.js
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+&quot;use strict&quot;;
+Object.defineProperty(__webpack_exports__, &quot;__esModule&quot;, { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__ = __webpack_require__(2);
+
+
+
+var item1Price = 400;
+var item2Price = 600;
+var totalPrice = Object(__WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__[&quot;a&quot; /* default */])(item1Price, item2Price);
+var tax = 1.08;
+var priceIncludeTax = Object(__WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__[&quot;a&quot; /* default */])(totalPrice, tax);
+
+console.log(priceIncludeTax);
+// $(&#39;body&#39;).html(priceIncludeTax);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+&quot;use strict&quot;;
+/* harmony export (immutable) */ __webpack_exports__[&quot;a&quot;] = additionCalculator;
+function additionCalculator(number1 ,number2) {
+  return number1 + number2;
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+&quot;use strict&quot;;
+/* harmony export (immutable) */ __webpack_exports__[&quot;a&quot;] = taxCalculator;
+function taxCalculator(price ,tax) {
+  return Math.round(price * tax);
+}
+
+
+/***/ })
+/******/ ]);
+```
+
+モジュールがバンドルされていることがわかる。
+また、以下のような`bundle.js`を読み込んでいるhtmlファイルをブラウザで開き、コンソールを確認してみると正常に動作していることがわかる。
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;webpack tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;js/bundle.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
+&lt;img width=&quot;616&quot; alt=&quot;bundle.jpg&quot; src=&quot;https://qiita-image-store.s3.amazonaws.com/0/69667/34133dd5-1875-a516-941a-68b374cf58e7.jpeg&quot;&gt;
+
+### モジュールがバンドルされたファイルを出力できたが
+これだけだとwebpack（モジュールバンドラ）の何が良いのかがわからないため、メリットやなぜ利用するのかを説明していく。
+
+# なぜwebpack（モジュールバンドラ）を利用するのか
+- 機能ごとにファイルを分割（モジュール化）する開発ができるから
+- 自分が作成したモジュールだけではなく、外部モジュール（npmなどでインストールできるパッケージなど）も利用できるから
+- リクエスト数を減らせるから
+- 依存関係を解決したファイルを出力できるから
+
+などモジュールの開発、再利用、バンドルなどが魅力的だから。
+
+## 機能ごとにファイルを分割（モジュール化）する開発ができる
+ファイルを分割（モジュール化）する開発には以下のようなメリットがある。
+
+- コードが見やすくなる（可読性の向上）
+- 開発作業の分担やテストがし易くなる
+- 名前空間を生成できる（変数の競合やグローバル汚染を防ぐ）
+- モジュールの保守性を高められる
+- モジュールの再利用性を高められる
+
+### コードが見やすくなる（可読性の向上）
+1つのファイルに複数の機能が書かれたコードよりも、1つのファイルに1つの機能が書かれたコードの方が見やすい。
+
+### 開発作業の分担やテストが容易になる
+1つのファイルに複数の機能が集中している場合、機能毎に担当を分けるなどの作業分担がし辛いし、テストもし辛い。
+機能ごとにファイルを分割していれば、作業分担やテストがし易い。
+
+### 名前空間を生成できる（変数の競合やグローバル汚染を防ぐ）
+モジュール毎に名前空間を割り当てれば、変数の競合やグローバル汚染を防げる。
+
+### モジュールの保守性を高められる
+モジュールは他のコードとの依存性が少なくあるべきなので、しっかり設計をすれば変更や拡張がしやすくなる。
+ファイルを分割すればモジュールになるわけではなく、あるモジュールを修正するために他のコードに大きな影響を与える場合、それはモジュールとは言えないため注意。
+
+### モジュールの再利用性を高められる
+汎用性の高いモジュールを開発すれば再利用できて便利。
+コードをコピペで再利用する場合だと、修正時にコピペしたファイルを全て修正する必要があるが、モジュールとしてファイルを分割しておけば1つのファイルを修正するだけで済む。
+
+## 自分が作成したモジュールだけではなく、外部モジュール（npmなどでインストールできるパッケージなど）も利用できる
+試しに外部モジュールのjQueryを利用してみる。まずは`jquery`をローカルインストールする。
+
+```sh
+npm install jquery --save
+```
+
+インストールしたパッケージは他のモジュール同様、`import`で読み込みモジュールとして利用できる。
+
+```js:src/js/app.js
+import $ from &#39;jquery&#39;;
+import additionCalculator from &#39;./modules/addition-calculator&#39;;
+import taxCalculator from &#39;./modules/tax-calculator&#39;;
+
+var item1Price = 400;
+var item2Price = 600;
+var totalPrice = additionCalculator(item1Price, item2Price);
+var tax = 1.08;
+var priceIncludeTax = taxCalculator(totalPrice, tax);
+
+console.log(priceIncludeTax);
+$(&#39;body&#39;).html(priceIncludeTax);
+```
+
+上記の状態で`webpack`コマンドを実行すると`jquery`もバンドルされたファイルが出力される。
+
+```sh
+webpack
+
+# 以下のような実行結果が出力される。
+Hash: 3c0ce07e2a811f5a391f
+Version: webpack 3.5.5
+Time: 416ms
+    Asset    Size  Chunks                    Chunk Names
+bundle.js  272 kB       0  [emitted]  [big]  main
+   [0] ./src/js/app.js 391 bytes {0} [built]
+   [2] ./src/js/modules/addition-calculator.js 93 bytes {0} [built]
+   [3] ./src/js/modules/tax-calculator.js 88 bytes {0} [built]
+    + 1 hidden module
+```
+
+`bundle.js`を読み込んでいるhtmlファイルをブラウザで確認してみると、jQueryもバンドルされて正常に動作していることがわかる。
+
+![webpack2.jpg](https://qiita-image-store.s3.amazonaws.com/0/69667/90feae84-a9a1-a416-7293-9ca57876b395.jpeg)
+
+外部モジュールを利用できたが、
+
+- 「わざわざファイルをまとめずに、scriptタグでjQuery読み込めば良いのでは？」
+
+と思った方は多々いると思うのし、確かにちょっとしたコードを書く程度ならそちらの方が楽。
+しかし、後述するメリットを考慮するとjQueryのような外部モジュールもバンドルした方が良い時もある。
+
+## リクエスト数を減らせる
+以下はjQueryを読み込み、jQueryに依存している`app.js`を読み込んでいるhtmlファイルだと想定する。
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;webpack tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
+上記のようなファイルは以下の懸念点がある。
+
+- 現在は1つのライブラリだけ読み込んでいるが、必要なライブラリが増えてリクエスト数が増える可能性がある（リクエスト数の増加はパフォーマンス上良くない）。
+
+webpackを利用すればファイルをバンドルできるため、リクエスト数を減らせる。
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;webpack tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- jQueryもバンドルされたファイル --&gt;
+&lt;script src=&quot;js/bundle.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
+しかし、全てのファイルを1つにバンドルする場合、以下の懸念点が考えられる。
+
+- ファイルサイズが非常に大きくなり読み込み時間がかかる。
+
+バンドルしたファイルを分割して出力したり、それらのファイルを非同期読み込みするなどの機能があるのでそれらを利用する。
+
+- キャッシュを活用できない。
+
+ライブラリは頻繁に変更しないファイルのため、キャッシュを活用すべきだが、全てのファイルを1つにバンドルするとそれができない。
+そのため、頻繁に変更するファイルのバンドルと、ライブラリ群をまとめたバンドルは別にして出力する（CommonsChunkPluginというプラグインが必要）。
+
+## 依存関係を解決したファイルを出力できる
+
+以下はjQueryを読み込み、jQueryに依存している`app.js`を読み込んでいるhtmlファイルだと想定する。
+`app.js`はjQueryに依存しているため、jQueryを読み込む前に`app.js`を読み込むと動かない。
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;webpack tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- app.jsはjQueryに依存しているため、jQueryを読み込んだ後に読み込む必要がある。 --&gt;
+&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
+上記のようなファイルは以下の懸念点がある。
+
+- 依存しているライブラリが1つだけなら良いが、依存が増えれば増えるほど依存関係がわかり辛くなる。
+- それぞれのファイルの依存関係をすぐに理解できるのは作業をした人間のみであり、別の作業者が依存関係をすぐに理解するのは困難。
+- 依存関係が複雑になればなるほど、迂闊にスクリプトの読み込み順を変更したり本来不要なファイルを削除できなくなる。
+
+webpackを利用すれば依存関係を解決してファイルをバンドルするため、スクリプトの順番を考慮する必要はなくなり依存関係に悩まされる可能性は低くなる。
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;webpack tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- 依存関係を解決してまとめられたファイル --&gt;
+&lt;script src=&quot;js/bundle.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
+また、依存するパッケージ（モジュール）を`package.json`に明記し、それらの利用を促せば以下のような事態に陥る可能性は低くなる。
+
+- 理由もなく作業者によって利用するライブラリのバージョンが異なる。
+- 1ページに同じライブラリが複数読み込まれてしまっている。
+- 同じライブラリが様々なディレクトリに存在する。誰がどこで何のために利用しているのかわからないため迂闊に消せない。
+
+## webpack（モジュールバンドラ）の使いどころ
+上記のメリットや機能が必要に感じたり、魅了に感じる状況であれば利用すべき。
+逆にすぐに捨てるコードや2〜30行程度のコンパクトなコードを書く程度なら必要ないと思う。
+
+webpackは非常に多くの機能が存在し、細かい設定ができるため`webpack.config.js`の内容を理解せずにコピペして利用するはやめた方が良い。
+利用用途に合わせて`webpack.config.js`を用意するべき。
+
+とは言え、全ての機能を完全に理解するのは困難なので、頻繁に利用しそうな機能を紹介していく。
+
+# webpackの様々な機能
+
+## watchモード
+ファイルを監視して変更があったらビルドを再実行する機能のこと。
+watchモードでは基本的にキャッシュが有効になるため、ビルド時間が短くなる。
+オプションを指定して`webpack`コマンドを実行するか、`webpack.config.js`に設定を記述することで利用できる。
+
+```sh
+webpack --watch
+```
+
+```js
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // watchモードを有効にする
+  watch: true,
+  entry: &quot;./app.js&quot;,
+  output: {
+    filename: &quot;bundle.js&quot;,
+    path: path.join(__dirname, &#39;public/js&#39;)
+  }
+}
+```
+
+## ローダー
+画像やCSSなどのJavaScript以外のファイルをJavaScriptで扱えるように変換したり、バンドルする前にモジュールに対して実行する機能のこと。
+TypeScriptをJavaScriptに変換、画像をDataURLに変換、コードをチェックするなど、ローダーによって機能は様々。
+
+
+### `babel-loader`
+ES2015（ES6）のコードをES5のコードに変換するローダー。
+
+ローダーを利用するためにはそれに応じたパッケージをインストールしておく必要がある。
+`babel-loader`を利用するために以下のパッケージをインストールする。
+
+```
+npm install babel-loader babel-core babel-preset-env --save-dev
+```
+
+インストール後、`webpack.config.js`に`babel-loader`の設定を追加する。
+
+```js:webpack.config.js
+// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // エントリーポイントの設定
+  entry: &#39;./src/js/app.js&#39;,
+  // 出力の設定
+  output: {
+    // 出力するファイル名
+    filename: &#39;bundle.js&#39;,
+    // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
+    path: path.join(__dirname, &#39;public/js&#39;)
+  },
+  // ローダーの設定
+  module: {
+    rules: [{
+      // ローダーの処理対象ファイル
+      test: /\.js$/,
+      // ローダーの処理対象から外すディレクトリ
+      exclude: /node_modules/,
+      // 利用するローダー
+      use: [{
+        loader: &#39;babel-loader&#39;,
+        options: {
+          presets: [&#39;env&#39;]
+        }
+      }],
+    }],
+  },
+};
+```
+
+上記の設定で`webpack`コマンドを実行すれば、以下のようなES2015（ES6）のコードをどのブラウザでも動くように変換してくれる。
+
+```js:src/js/app.js
+import $ from &#39;jquery&#39;;
+import additionCalculator from &#39;./modules/addition-calculator&#39;;
+import taxCalculator from &#39;./modules/tax-calculator&#39;;
+
+const item1Price = 400;
+const item2Price = 600;
+const totalPrice = additionCalculator(item1Price, item2Price);
+const tax = 1.08;
+const priceIncludeTax = taxCalculator(totalPrice, tax);
+
+console.log(priceIncludeTax);
+$(&#39;body&#39;).html(priceIncludeTax);
+```
+
+### `eslint-loader`
+JavaScriptのコードを検証するローダー。
+
+`eslint-loader`を利用するために以下のパッケージをインストールする。
+
+```
+npm install eslint eslint-loader --save-dev
+```
+
+インストール後、`webpack.config.js`に`eslint-loader`の設定を追加する。
+
+```js:webpack.config.js
+// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // エントリーポイントの設定
+  entry: &#39;./src/js/app.js&#39;,
+  // 出力の設定
+  output: {
+    // 出力するファイル名
+    filename: &#39;bundle.js&#39;,
+    // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
+    path: path.join(__dirname, &#39;public/js&#39;)
+  },
+  // ローダーの設定
+  module: {
+    rules: [{
+      // ローダーの処理対象ファイル
+      test: /\.js$/,
+      // ローダーの処理対象から外すディレクトリ
+      exclude: /node_modules/,
+      use: [{
+        // 利用するローダー
+        loader: &#39;babel-loader&#39;,
+        // ローダーのオプション
+        options: {
+          presets: [&#39;env&#39;]
+        }
+      }],
+    }, {
+      // enforce: &#39;pre&#39;を指定することによって
+      // enforce: &#39;pre&#39;がついていないローダーより早く処理が実行される
+      // 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要
+      enforce: &#39;pre&#39;,
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: &#39;eslint-loader&#39;,
+    }],
+  },
+};
+```
+
+`babel-loader`の設定記述とほとんど変わりないが、`babel-loader`で変換する前にコードを検証したいため`enforce: &#39;pre&#39;`を指定する。
+
+また、`eslint`の設定ファイルである`.eslintrc`も追加する。
+※webpackの解説記事のため、設定項目の詳細は割愛します。
+
+```json:.eslintrc
+{
+  &quot;extends&quot;: &quot;eslint:recommended&quot;,
+  &quot;parserOptions&quot;: {
+    &quot;ecmaVersion&quot;: 6,
+    &quot;sourceType&quot;: &quot;module&quot;
+  },
+  &quot;env&quot;: {
+    &quot;browser&quot;: true
+  }
+}
+```
+
+`.eslintrc`は`package.json`と同じ階層に追加するため、ディレクトリ構成は以下の通り。
+
+```
+.
+├── .eslintrc
+├── package.json
+├── public
+│   ├── index.html
+│   └── js
+│       └── bundle.js
+├── src
+│   └── js
+│       ├── app.js
+│       └── modules
+│           ├── addition-calculator.js
+│           └── tax-calculator.js
+└── webpack.config.js
+```
+
+上記の設定で`webpack`コマンドを実行すれば、以下のように検証結果が出力される。
+
+```sh
+ERROR in ./src/js/app.js
+
+/Users/mac/GitHub/prototype/webpack-v3-tutorial/src/js/app.js
+  11:1  error  Unexpected console statement  no-console
+```
+
+### ローダーを設定する書き方は色々ある
+ローダーを設定する書き方は色々あり、上記の`babel-loader`の設定は以下のようにも書ける。
+
+```JavaScript
+module: {
+  rules: [{
+    test: /\.js$/,
+    exclude: /node_modules/,
+    use: [{
+      loader: &#39;babel-loader?presets[]=env&#39;
+    }],
+  }],
+},
+```
+
+以下のように`use`を省略して書くこともできる。
+
+```JavaScript
+module: {
+  rules: [{
+    test: /\.js$/,
+    exclude: /node_modules/,
+    loader: &#39;babel-loader&#39;,
+    options: {
+      presets: [&#39;env&#39;]
+    },
+  }],
+},
+```
+
+以下のように`use`を利用すると、ローダーを複数指定すること等が可能なため、状況に応じて使い分ける。
+
+```JavaScript
+module: {
+  rules: [{
+    test: /\.js$/,
+    exclude: /node_modules/,
+    use: [{
+        loader: &#39;babel-loader&#39;,
+        options: {
+          presets: [&#39;env&#39;]
+        },
+      }, {
+        loader: &#39;jshint-loader&#39;
+      }
+    ]
+  }],
+},
+```
+
+## プラグイン
+モジュールのバンドル時に実行される様々な処理のこと。今回はいくつかプラグインを追加してみる。
+プラグインを利用するためには`webpack.config.js`上で`webpack`を読み込む必要があるためローカルインストールする。
+
+```sh
+npm install webpack --save-dev
+```
+
+### `UglifyJsPlugin`
+JavaScriptを圧縮するプラグイン。
+以下は`webpack.config.js`に`UglifyJsPlugin`を追加したもの。
+
+```js:webpack.config.js
+// UglifyJsPluginなどのプラグインを利用するためにwebpackを読み込んでおく必要がある。
+const webpack = require(&#39;webpack&#39;);
+
+// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // エントリーポイントの設定
+  entry: &#39;./src/js/app.js&#39;,
+  // 出力の設定
+  output: {
+    // 出力するファイル名
+    filename: &#39;bundle.js&#39;,
+    // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
+    path: path.join(__dirname, &#39;public/js&#39;)
+  },
+  // ローダーの設定
+  module: {
+    rules: [{
+      // ローダーの処理対象ファイル
+      test: /\.js$/,
+      // ローダーの処理対象から外すディレクトリ
+      exclude: /node_modules/,
+      use: [{
+        // 利用するローダー
+        loader: &#39;babel-loader&#39;,
+        // ローダーのオプション
+        options: {
+          presets: [&#39;env&#39;]
+        }
+      }],
+    }, {
+      // enforce: &#39;pre&#39;を指定することによって
+      // enforce: &#39;pre&#39;がついていないローダーより早く処理が実行される
+      // 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要
+      enforce: &#39;pre&#39;,
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: &#39;eslint-loader&#39;,
+    }],
+  },
+  // プラグインの設定
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        // console.log（）などのconsole.*系の記述を取り除いて出力する
+        drop_console: true
+      },
+    }),
+  ],
+};
+```
+
+上記の設定で`webpack`コマンドを実行すれば、圧縮されたファイル（圧縮前は278KB）が出力される。
+
+```sh
+webpack
+
+# 以下のような実行結果が出力される。
+Hash: 28f48b1d156e32bebdc7
+Version: webpack 3.5.5
+Time: 2433ms
+    Asset     Size  Chunks             Chunk Names
+bundle.js  88.3 kB       0  [emitted]  main
+   [0] ./src/js/app.js 747 bytes {0} [built]
+   [2] ./src/js/modules/addition-calculator.js 195 bytes {0} [built]
+   [3] ./src/js/modules/tax-calculator.js 185 bytes {0} [built]
+    + 1 hidden module
+```
+
+プラグインを利用せず、以下のコマンドでも圧縮したファイルが出力される。
+
+```
+webpack -p
+```
+
+ビルドする度にファイルが圧縮されるのは好ましくない場合はコマンドで実行する。
+
+### `ProvidePlugin`
+指定したモジュールをすべてのファイル（モジュール）の変数として利用可能にするプラグイン。
+利用可能にしたモジュールは`import`などで読み込む必要がなくなる。
+以下は`webpack.config.js`に`ProvidePlugin`を追加したもの。
+
+```js:webpack.config.js
+// UglifyJsPluginなどのプラグインを利用するためにwebpackを読み込んでおく必要がある。
+const webpack = require(&#39;webpack&#39;);
+
+// output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  // エントリーポイントの設定
+  entry: &#39;./src/js/app.js&#39;,
+  // 出力の設定
+  output: {
+    // 出力するファイル名
+    filename: &#39;bundle.js&#39;,
+    // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
+    path: path.join(__dirname, &#39;public/js&#39;)
+  },
+  // ローダーの設定
+  module: {
+    rules: [{
+      // ローダーの処理対象ファイル
+      test: /\.js$/,
+      // ローダーの処理対象から外すディレクトリ
+      exclude: /node_modules/,
+      use: [{
+        // 利用するローダー
+        loader: &#39;babel-loader&#39;,
+        // ローダーのオプション
+        options: {
+          presets: [&#39;env&#39;]
+        }
+      }],
+    }, {
+      // enforce: &#39;pre&#39;を指定することによって
+      // enforce: &#39;pre&#39;がついていないローダーより早く処理が実行される
+      // 今回はbabel-loaderで変換する前にコードを検証したいため、指定が必要
+      enforce: &#39;pre&#39;,
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: &#39;eslint-loader&#39;,
+    }],
+  },
+  // プラグインの設定
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        // console.log（）などのconsole.*系の記述を取り除いて出力する
+        drop_console: true
+      },
+    }),
+    new webpack.ProvidePlugin({
+      $: &#39;jquery&#39;
+    }),
+  ],
+};
+```
+
+`jquery`を全てのモジュール上で変数`$`として利用できるようにしたため、`app.js`の`jquery`を読み込む記述を消しても正常に動作する。
+
+```js:src/js/app.js
+import additionCalculator from &#39;./modules/addition-calculator&#39;;
+import taxCalculator from &#39;./modules/tax-calculator&#39;;
+
+const item1Price = 400;
+const item2Price = 600;
+const totalPrice = additionCalculator(item1Price, item2Price);
+const tax = 1.08;
+const priceIncludeTax = taxCalculator(totalPrice, tax);
+
+console.log(priceIncludeTax);
+$(&#39;body&#39;).html(priceIncludeTax);
+```
+
+### `CommonsChunkPlugin`
+複数のエントリーポイント間で利用できる共通のモジュールをバンドルしたファイルを出力するプラグイン。
+
+※詳細は別の記事に書きましたので、こちらを参考にしてください（こちらの記事はv1系のままなので後日更新します）。
+[webpackのCommonsChunkPluginの使い方、使い所](http://qiita.com/soarflat/items/f8212434c4c3cb8ee00d)
+
+# 終わり
+今後もフロントエンド開発は大規模かつ複雑になると思うのでモジュール化を考慮した開発は普段から意識しておいて損はないです。
+とは言え、いきなり自分でモジュールを開発するのも難しいと思うため、まずは外部モジュールの利用から始めてみると良いと思います。
+興味を持った方やより深く知りたい方は[ドキュメント](https://webpack.js.org/)を見ることをお勧めします。
+</textarea><input type="submit" name="commit" value="Save changes" data-disable-with="Save changes"/></form>
+                </div>
+              </section>
+            </div>
+            <div class="col-sm-3">
+              <div class="socialButtons">
+                <div class="socialButtons_twitter"><a class="twitter-share-button" data-text="webpack 入門 （v3系 対応） on @Qiita" data-url="https://qiita.com/soarflat/items/28bf799f7e0335b68186" href="https://twitter.com/share">ツイート</a></div>
+                <div class="socialButtons_hatebu">
+                  <a class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-title="webpack 入門 （v3系 対応）" href="http://b.hatena.ne.jp/entry/https://qiita.com/soarflat/items/28bf799f7e0335b68186" title="はてブに追加"><img alt="はてブに追加" height="20" src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" style="border: none;" width="20"/></a>
+                  <script async="async" charset="utf-8" src="https://b.st-hatena.com/js/bookmark_button.js" type="text/javascript"></script>
+                </div>
+                <div class="socialButtons_googlePlus">
+                  <div class="g-plusone" data-href="https://qiita.com/soarflat/items/28bf799f7e0335b68186" data-size="medium"></div>
+                </div>
+                <div class="socialButtons_qiitadon">
+                  <a class="mastodonShareButton" href="https://qiitadon.com/share?text=webpack+%E5%85%A5%E9%96%80+%EF%BC%88v3%E7%B3%BB+%E5%AF%BE%E5%BF%9C%EF%BC%89+by+soarflat+https%3A%2F%2Fqiita.com%2Fsoarflat%2Fitems%2F28bf799f7e0335b68186+%23Qiita+%23JavaScript+%23%E5%85%A5%E9%96%80+%23webpack" target="_blank" title="Qiitadonでトゥート">Toot</a>
+                </div>
+                <div class="socialButtons_facebook">
+                  <div class="fb-like" data-action="like" data-href="https://qiita.com/soarflat/items/28bf799f7e0335b68186" data-layout="button_count" data-share="false" data-show-faces="false"></div>
+                </div>
+                <div class="socialButtons_pocket"><a class="pocket-btn" data-lang="en" data-pocket-count="horizontal" data-pocket-label="pocket"></a></div>
+              </div>
+              <section class="itemsShowAuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><a href="/soarflat"><img alt="" class="itemsShowAuthorInfo_userIcon" itemprop="image" src="https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226"/></a>
+                <div class="itemsShowAuthorInfo_profileStats"><strong class="itemsShowAuthorInfo_userName" itemprop="name"><a itemprop="url" href="/soarflat">soarflat</a></strong>
+                  <div class="itemsShowAuthorInfo_contribution"><span class="itemsShowAuthorInfo_count">1917</span><span class="itemsShowAuthorInfo_unit">Contribution</span></div>
+                </div>
+                <section class="itemsShowAuthorPopularItems"><h5 class="itemsShowAuthorPopularItems_sectionTitle">人気の投稿</h5>
+                  <ul class="itemsShowAuthorPopularItems_posts list-unstyled">
+                    <li itemscope="" itemtype="http://schema.org/Article"><a itemprop="url" href="/soarflat/items/d5015bec37f8a8254380">PATHを通すために環境変数の設定を理解する (Mac OS X)</a></li>
+                    <li itemscope="" itemtype="http://schema.org/Article"><a itemprop="url" href="/soarflat/items/09be6ab9cd91d366bf71">PATHを通すとは？ (Mac OS X)</a></li>
+                    <li itemscope="" itemtype="http://schema.org/Article"><a itemprop="url" href="/soarflat/items/4a302e0cafa21477707f">CSSアニメーション 入門</a></li>
+                    <li itemscope="" itemtype="http://schema.org/Article"><a itemprop="url" href="/soarflat/items/28bf799f7e0335b68186">webpack 入門 （v3系 対応）</a></li>
+                    <li itemscope="" itemtype="http://schema.org/Article"><a itemprop="url" href="/soarflat/items/b251caf9cb59b72beb9b">ES2015(ES6) 入門</a></li>
+                  </ul>
+                </section>
+                <section class="itemsShowAuthorInfo_organization"><h5 class="itemsShowAuthorInfo_organizationTitle">Organization</h5>
+                  <span itemprop="memberOf" itemscope="" itemtype="http://schema.org/Organization"><a itemprop="url" href="/organizations/imj"><img alt="株式会社アイ・エム・ジェイ TSUKURITE" class="itemsShowAuthorInfo_organizationLogo" itemprop="image" src="https://s3-ap-northeast-1.amazonaws.com/qiita-organization-image/5faaf4a82eaf788cd2b13e8a1aee69344cbbc7cf/original.jpg?1511167955"/></a></span>
+                </section>
+              </section>
+              <div class="scroll-chaser"></div>
+              <script type="application/json" id="js-react-on-rails-context">{}</script>
+              <script type="application/json" class="js-react-on-rails-component" data-component-name="Toc" data-dom-id="Toc-react-component-0ee3831c-e598-49ec-993b-d48751f26ee0">{
+                "body": "\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB\"\u003eはじめに\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E6%9C%AC%E8%A8%98%E4%BA%8B%E3%81%AE%E5%89%8D%E6%8F%90%E3%82%84%E6%B3%A8%E6%84%8F%E7%82%B9\"\u003e本記事の前提や注意点\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%81%A8%E3%81%AF\"\u003ewebpackとは\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%81%A8%E3%81%AF\"\u003eモジュールバンドラとは\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E9%96%A2%E9%80%A3%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E3%82%88%E3%81%8F%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E7%94%A8%E8%AA%9E\"\u003ewebpack（モジュールバンドラ）関連の記事でよく利用されている用語\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB\"\u003eモジュール\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB\"\u003eバンドル\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%99%E3%82%8B\"\u003eバンドルする\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%93%E3%83%AB%E3%83%89\"\u003eビルド\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B\"\u003ewebpackを利用してみる\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB\"\u003ewebpackのインストール\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90\"\u003eディレクトリ構成\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%81%AE%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB\"\u003ewebpackのローカルインストール\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9Fpackage%E4%BB%8A%E5%9B%9E%E3%81%AFwebpack%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%ABpath%E3%82%92%E9%80%9A%E3%81%99\"\u003eローカルインストールしたpackage（今回はwebpack）を実行するためにPATHを通す\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E5%90%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E8%A9%B3%E7%B4%B0\"\u003e各ファイルの詳細\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#webpackconfigjswebpack%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB\"\u003e\u003ccode\u003ewebpack.config.js\u003c/code\u003e（webpackの設定ファイル）\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#entry\"\u003e\u003ccode\u003eentry\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#output\"\u003e\u003ccode\u003eoutput\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#appjs%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88\"\u003e\u003ccode\u003eapp.js\u003c/code\u003e（エントリーポイント）\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#addition-calculatorjs%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB\"\u003e\u003ccode\u003eaddition-calculator.js\u003c/code\u003e（モジュール）\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#tax-calculatorjs%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB\"\u003e\u003ccode\u003etax-calculator.js\u003c/code\u003e（モジュール）\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%A7%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%95%E3%82%8C%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B\"\u003e\u003ccode\u003ewebpack\u003c/code\u003eコマンドでバンドルされたファイルを出力\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%8C%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%95%E3%82%8C%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%A7%E3%81%8D%E3%81%9F%E3%81%8C\"\u003eモジュールがバンドルされたファイルを出力できたが\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%81%AA%E3%81%9Cwebpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E3%81%AE%E3%81%8B\"\u003eなぜwebpack（モジュールバンドラ）を利用するのか\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E6%A9%9F%E8%83%BD%E3%81%94%E3%81%A8%E3%81%AB%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E5%89%B2%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E5%8C%96%E3%81%99%E3%82%8B%E9%96%8B%E7%99%BA%E3%81%8C%E3%81%A7%E3%81%8D%E3%82%8B\"\u003e機能ごとにファイルを分割（モジュール化）する開発ができる\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%82%B3%E3%83%BC%E3%83%89%E3%81%8C%E8%A6%8B%E3%82%84%E3%81%99%E3%81%8F%E3%81%AA%E3%82%8B%E5%8F%AF%E8%AA%AD%E6%80%A7%E3%81%AE%E5%90%91%E4%B8%8A\"\u003eコードが見やすくなる（可読性の向上）\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E9%96%8B%E7%99%BA%E4%BD%9C%E6%A5%AD%E3%81%AE%E5%88%86%E6%8B%85%E3%82%84%E3%83%86%E3%82%B9%E3%83%88%E3%81%8C%E5%AE%B9%E6%98%93%E3%81%AB%E3%81%AA%E3%82%8B\"\u003e開発作業の分担やテストが容易になる\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E3%82%92%E7%94%9F%E6%88%90%E3%81%A7%E3%81%8D%E3%82%8B%E5%A4%89%E6%95%B0%E3%81%AE%E7%AB%B6%E5%90%88%E3%82%84%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%90%E3%83%AB%E6%B1%9A%E6%9F%93%E3%82%92%E9%98%B2%E3%81%90\"\u003e名前空間を生成できる（変数の競合やグローバル汚染を防ぐ）\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BF%9D%E5%AE%88%E6%80%A7%E3%82%92%E9%AB%98%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B\"\u003eモジュールの保守性を高められる\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E5%86%8D%E5%88%A9%E7%94%A8%E6%80%A7%E3%82%92%E9%AB%98%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B\"\u003eモジュールの再利用性を高められる\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E8%87%AA%E5%88%86%E3%81%8C%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%A0%E3%81%91%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F%E5%A4%96%E9%83%A8%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%ABnpm%E3%81%AA%E3%81%A9%E3%81%A7%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A7%E3%81%8D%E3%82%8B%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AA%E3%81%A9%E3%82%82%E5%88%A9%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B\"\u003e自分が作成したモジュールだけではなく、外部モジュール（npmなどでインストールできるパッケージなど）も利用できる\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E6%95%B0%E3%82%92%E6%B8%9B%E3%82%89%E3%81%9B%E3%82%8B\"\u003eリクエスト数を減らせる\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E4%BE%9D%E5%AD%98%E9%96%A2%E4%BF%82%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%87%BA%E5%8A%9B%E3%81%A7%E3%81%8D%E3%82%8B\"\u003e依存関係を解決したファイルを出力できる\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%90%E3%83%B3%E3%83%89%E3%83%A9%E3%81%AE%E4%BD%BF%E3%81%84%E3%81%A9%E3%81%93%E3%82%8D\"\u003ewebpack（モジュールバンドラ）の使いどころ\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#webpack%E3%81%AE%E6%A7%98%E3%80%85%E3%81%AA%E6%A9%9F%E8%83%BD\"\u003ewebpackの様々な機能\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#watch%E3%83%A2%E3%83%BC%E3%83%89\"\u003ewatchモード\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC\"\u003eローダー\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#babel-loader\"\u003e\u003ccode\u003ebabel-loader\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#eslint-loader\"\u003e\u003ccode\u003eeslint-loader\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E6%9B%B8%E3%81%8D%E6%96%B9%E3%81%AF%E8%89%B2%E3%80%85%E3%81%82%E3%82%8B\"\u003eローダーを設定する書き方は色々ある\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3\"\u003eプラグイン\u003c/a\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#uglifyjsplugin\"\u003e\u003ccode\u003eUglifyJsPlugin\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#provideplugin\"\u003e\u003ccode\u003eProvidePlugin\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#commonschunkplugin\"\u003e\u003ccode\u003eCommonsChunkPlugin\u003c/code\u003e\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E7%B5%82%E3%82%8F%E3%82%8A\"\u003e終わり\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n",
+                "wrapper": "#article-body-wrapper"
+              }</script>
+              <div id="Toc-react-component-0ee3831c-e598-49ec-993b-d48751f26ee0"></div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="ArticleFooter__menu">
+                <div class="s-flex-align-center">
+                  <div class="LikeLabel"><span class="fa fa-thumbs-o-up"></span><span class="LikeLabel__text"> いいね</span><span class="LikeLabel__count">266</span></div>
+                  <div class="ArticleFooter__userList">
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="t-tonchim"><a itemprop="url" href="/t-tonchim"><img alt="t-tonchim" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/79465/profile-images/1481325000"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="a-ide"><a itemprop="url" href="/a-ide"><img alt="a-ide" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/68739/profile-images/1483775720"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="akamt"><a itemprop="url" href="/akamt"><img alt="akamt" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/80693/profile-images/1479559003"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="hazuki"><a itemprop="url" href="/hazuki"><img alt="hazuki" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/94403/profile-images/1473706256"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="iwata@github"><a itemprop="url" href="/iwata@github"><img alt="iwata@github" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/1847/profile-images/1473683906"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="tewata"><a itemprop="url" href="/tewata"><img alt="tewata" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/119083/profile-images/1473714153"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="masato_makino"><a itemprop="url" href="/masato_makino"><img alt="masato_makino" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/9556/profile-images/1473681453"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="pnm48"><a itemprop="url" href="/pnm48"><img alt="pnm48" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/111708/profile-images/1485669105"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="c-cho"><a itemprop="url" href="/c-cho"><img alt="c-cho" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/129176/profile-images/1473717475"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user">
+                      <div class="js-hovercard" data-hovercard-target-name="hayashier"><a itemprop="url" href="/hayashier"><img alt="hayashier" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/81083/profile-images/1487002191"/></a></div>
+                    </div>
+                    <div class="ArticleFooter__user"><a href="/soarflat/items/28bf799f7e0335b68186/likers"><span class="fa fa-ellipsis-h"></span></a></div>
+                  </div>
+                </div>
+                <div class="u-flex u-align-center">
+                  <div class="ArticleFooter__stock">
+                    <div class="js-stockbutton" data-position="footer_menu" data-props="{&quot;stock_status&quot;:false}"></div>
+                  </div>
+                  <div class="dropdown ArticleFooter__dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-ellipsis-h"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a href="/soarflat/items/28bf799f7e0335b68186.md"><span class="fa fa-fw fa-file-text-o"></span> Markdownで本文を見る</a></li>
+                      <li><a data-target=".js-report-form" data-toggle="modal" href="#"><i class="fa fa-fw fa-flag"></i> 問題がある投稿を報告する</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <ul class="references js-referencesView mt-5">
+                <li class="references_header"><i class="fa fa-fw fa-link"></i> この記事は以下の記事からリンクされています</li>
+                <li class="references_reference js-reference">
+                  <a href="/soarflat/items/f8212434c4c3cb8ee00d#_reference-d1cb299af82024ef8524"><img alt="" width="18" height="18" src="https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226"/>webpackのCommonsChunkPluginの使い方、使い所</a><span>からリンク</span>
+                  <time class="references_datetime js-dateTimeView" datetime="2017-03-01T01:05:43+00:00">9ヶ月前</time>
+                </li>
+                <li class="references_reference js-reference"><a href="/ksm240/items/acda2c56d6c3bfb37190#_reference-6aecff069bc853bf9b24"><img alt="" width="18" height="18" src="https://qiita-image-store.s3.amazonaws.com/0/43372/profile-images/1510486768"/>webpack2はじめました</a><span>からリンク</span>
+                  <time class="references_datetime js-dateTimeView" datetime="2017-04-11T07:40:27+00:00">8ヶ月前</time>
+                </li>
+                <li class="references_reference js-reference"><a href="/eiji03aero/items/171089a134da7b1ad548#_reference-fae085badd0d8a37fcc5"><img alt="" width="18" height="18" src="https://avatars.githubusercontent.com/u/13347338?v=3"/>Node.js周りの学びメモ</a><span>からリンク</span>
+                  <time class="references_datetime js-dateTimeView" datetime="2017-08-16T23:49:03+00:00">3ヶ月前</time>
+                </li>
+              </ul>
+              <div class="itemsShowBody_articleColumnFooter">
+                <div class="socialButtons">
+                  <div class="socialButtons_twitter"><a class="twitter-share-button" data-text="webpack 入門 （v3系 対応） on @Qiita" data-url="https://qiita.com/soarflat/items/28bf799f7e0335b68186" href="https://twitter.com/share">ツイート</a></div>
+                  <div class="socialButtons_hatebu">
+                    <a class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-title="webpack 入門 （v3系 対応）" href="http://b.hatena.ne.jp/entry/https://qiita.com/soarflat/items/28bf799f7e0335b68186" title="はてブに追加"><img alt="はてブに追加" height="20" src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" style="border: none;" width="20"/></a>
+                    <script async="async" charset="utf-8" src="https://b.st-hatena.com/js/bookmark_button.js" type="text/javascript"></script>
+                  </div>
+                  <div class="socialButtons_googlePlus">
+                    <div class="g-plusone" data-href="https://qiita.com/soarflat/items/28bf799f7e0335b68186" data-size="medium"></div>
+                  </div>
+                  <div class="socialButtons_qiitadon">
+                    <a class="mastodonShareButton" href="https://qiitadon.com/share?text=webpack+%E5%85%A5%E9%96%80+%EF%BC%88v3%E7%B3%BB+%E5%AF%BE%E5%BF%9C%EF%BC%89+by+soarflat+https%3A%2F%2Fqiita.com%2Fsoarflat%2Fitems%2F28bf799f7e0335b68186+%23Qiita+%23JavaScript+%23%E5%85%A5%E9%96%80+%23webpack" target="_blank" title="Qiitadonでトゥート">Toot</a>
+                  </div>
+                  <div class="socialButtons_facebook">
+                    <div class="fb-like" data-action="like" data-href="https://qiita.com/soarflat/items/28bf799f7e0335b68186" data-layout="button_count" data-share="false" data-show-faces="false"></div>
+                  </div>
+                  <div class="socialButtons_pocket"><a class="pocket-btn" data-lang="en" data-pocket-count="horizontal" data-pocket-label="pocket"></a></div>
+                </div>
+              </div>
+              <div class="itemsShowComment_wrapper" id="comments">
+                <script type="application/json" class="js-react-on-rails-component" data-component-name="PublicCommentListContainer" data-dom-id="PublicCommentListContainer-react-component-ce377442-119f-4428-b495-087cdbf1e6bd">{
+                  "currentUser": {
+                    "contribution": 1917,
+                    "created_at": "2015-02-17T22:58:42+09:00",
+                    "id": 69667,
+                    "is_admin": false,
+                    "profile_image_url": "https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226",
+                    "suspended": false,
+                    "url_name": "soarflat"
+                  },
+                  "initialComments": [],
+                  "monthly_public_image_uploadable_size_limit": 104857600,
+                  "total_uploaded_public_image_size_in_current_month": 0,
+                  "item": {
+                    "id": 465216,
+                    "uuid": "28bf799f7e0335b68186",
+                    "suspended": false,
+                    "secret": false
+                  },
+                  "owner": {
+                    "url_name": "soarflat"
+                  },
+                  "is_team": false,
+                  "is_project": false,
+                  "logged_in": true,
+                  "polling": false,
+                  "mention_candidates": [
+                    {
+                      "id": 69667,
+                      "url_name": "soarflat",
+                      "profile_image_url": "https://qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226"
+                    }
+                  ]
+                }</script>
+                <div id="PublicCommentListContainer-react-component-ce377442-119f-4428-b495-087cdbf1e6bd"></div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <div class="js-report-form modal fade reportForm">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button name="button" type="submit" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">問題がある投稿を報告する</h4></div>
+            <div class="modal-body">
+              <form class="new_public_issue_report" id="new_public_issue_report" action="/api/internal/issue_reports" accept-charset="UTF-8" method="post">
+                <input name="utf8" type="hidden" value="&#x2713;"/><input type="hidden" name="authenticity_token" value="6YMa4ROV0kT8FK7fhLsFuGCr/Wv334fSQ1yNEkeD9M97vZpFKjcKdiNhy+7spTEFKqvIzPCoU/Y5deK0wi24YA=="/><input type="hidden" value="PublicDomainArticle" name="public_issue_report[target_type]" id="public_issue_report_target_type"/><input type="hidden" value="465216" name="public_issue_report[target_id]" id="public_issue_report_target_id"/>
+                <p>この投稿にどのような問題がありますか？</p><br/>
+                <div class="form-group">
+                  <ul class="list-unstyled">
+                    <li><label><input required="required" type="radio" value="spam" name="public_issue_report[reason]" id="public_issue_report_reason_spam"/> スパムです </label></li>
+                    <li><label><input required="required" type="radio" value="harassment" name="public_issue_report[reason]" id="public_issue_report_reason_harassment"/> 攻撃的または迷惑な内容を含んでいます </label></li>
+                    <li><label><input required="required" type="radio" value="inappropriate_content" name="public_issue_report[reason]" id="public_issue_report_reason_inappropriate_content"/> 不適切な内容を含んでいます </label></li>
+                  </ul>
+                </div>
+                <div class="reportForm_submitButtonContainer">
+                  <button name="button" type="submit" class="btn btn-primary reportForm_submitButton"><i class="fa fa-send"></i> 送信</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script id="js-item" type="application/json">{
+        "url": "https://qiita.com/soarflat/items/28bf799f7e0335b68186",
+        "id": 465216,
+        "uuid": "28bf799f7e0335b68186"
+      }</script>
+      <script class="js-user" type="application/json">{
+        &quot;id&quot;: 69667, &quot;url_name&quot;: &quot;soarflat&quot;, &quot;profile_image_url&quot;: &quot;https: //qiita-image-store.s3.amazonaws.com/0/69667/profile-images/1473698226&quot;}</script>
+      <script language="JavaScript" src="//cdn.bigmining.com/private/js/qiita_bigmining.js" type="text/javascript"></script>
+    </div>
+    <footer class="footer">
+      <div class="footer_inner">
+        <div class="footer_container">
+          <ul class="footer_links-left">
+            <li class="footer_link"><a class="footer_copyright" href="http://increments.co.jp">© 2011-2017 Increments Inc.</a></li>
+            <li class="footer_link"><a href="https://qiita.com/terms">利用規約</a></li>
+            <li class="footer_link"><a href="https://qiita.com/privacy">プライバシー</a></li>
+            <li class="footer_link"><a href="http://help.qiita.com">ヘルプ</a></li>
+            <li class="footer_link"><a href="https://increments.zendesk.com/anonymous_requests/new">お問い合わせ</a></li>
+          </ul>
+          <ul class="footer_links-right">
+            <li class="footer_link"><a href="https://qiita.com/about">Qiitaとは</a></li>
+            <li class="footer_link"><a href="/users">ユーザー</a></li>
+            <li class="footer_link"><a href="/tags">タグ</a></li>
+            <li class="footer_link"><a href="http://blog.qiita.com">ブログ</a></li>
+            <li class="footer_link"><a href="https://qiita.com/api/v2/docs">API</a></li>
+            <li class="footer_link"><a href="https://teams.qiita.com/">Team</a></li>
+            <li class="footer_link"><a href="http://kobito.qiita.com">Kobito</a></li>
+            <li class="footer_link"><a class="js-public-form-feedback-link" data-target=".js-feedback-form" data-toggle="modal" href=""><i class="fa fa-heart"></i> ご意見 <i class="fa fa-caret-down"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <div class="js-feedback-form modal fade feedbackForm">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button name="button" type="submit" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">ご意見</h4></div>
+          <div class="modal-body">
+            <form class="js-feedback-form-form" action="/feedbacks" accept-charset="UTF-8" method="post">
+              <input name="utf8" type="hidden" value="&#x2713;"/><input type="hidden" name="authenticity_token" value="PYmJj6fK+eK0iL/R753LOxdIhnEIUYtoFq3CaQCMkuuvtwkrnmgh0Gv92uCHg/+GXUiz1g8mX0xshK3PhSLeRA=="/><input type="hidden" name="redirect_path" id="redirect_path" value="/soarflat/items/28bf799f7e0335b68186"/>
+              <div class="form-group"><textarea name="feedback[message]" id="feedback_message" class="form-control js-feedback-form-text-area" placeholder="Qiitaについてのご意見をお聞かせください。" required="required" rows="5">
+</textarea></div>
+              <div class="feedbackForm_submitButtonContainer">
+                <button name="button" type="submit" class="btn btn-primary feedbackForm_submitButton"><i class="fa fa-send"></i> 送信</button>
+                <p class="feedbackForm_note">いただいたご意見への返信は行っておりません。<br/>返信の必要な内容については、<a href="https://increments.zendesk.com/anonymous_requests/new">こちら</a> からお問い合わせください。</p></div>
+              <div style="position:fixed;top:-99999px;opacity:0.0001;"><input name="feedback[name]" type="text"/></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>// if (window.mixpanel instanceof Element) {
+    //   window.mixpanel = [];
+    // }
+    // (function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+    // for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);</script>
+    <script src="https://cdn.qiita.com/assets/public-eb50d263f594903d4df79b0ad30583b7.min.js"></script>
+  </body>
+</html>
